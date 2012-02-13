@@ -1,0 +1,14 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first=link_to pat(:list), url(:games, :index)
+      %li.active=link_to pat(:new), url(:games, :new)
+  .content
+    %h2.title
+      =pat(:new)
+      =mt(:game)
+    .inner
+      -form_for :game, url(:games, :create), :class => :form do |f|
+        =partial "games/form", :locals => { :f => f }
+
+-content_for :sidebar, partial("base/sidebar")

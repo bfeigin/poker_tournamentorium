@@ -1,0 +1,22 @@
+.group
+  =f.label :player_id
+  =f.error_message_on :player_id
+  =f.text_field :player_id, :class => :text_field
+  %span.description Ex: a simple text
+
+.group
+  =f.label :cards
+  =f.error_message_on :cards
+  =f.text_field :cards, :class => :text_field
+  %span.description Ex: a simple text
+
+.group
+  =f.label :turn_number
+  =f.error_message_on :turn_number
+  =f.text_field :turn_number, :class => :text_field
+  %span.description Ex: a simple text
+
+
+.group.navform.wat-cf
+  =f.submit pat(:save), :class => :button
+  =f.submit pat(:cancel), :onclick => "window.location='#{url(:hands, :index)}';return false", :class => :button

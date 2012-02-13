@@ -1,0 +1,28 @@
+.group
+  =f.label :tournament_id
+  =f.error_message_on :tournament_id
+  =f.text_field :tournament_id, :class => :text_field
+  %span.description Ex: a simple text
+
+.group
+  =f.label :betting_round
+  =f.error_message_on :betting_round
+  =f.text_field :betting_round, :class => :text_field
+  %span.description Ex: a simple text
+
+.group
+  =f.label :turn
+  =f.error_message_on :turn
+  =f.text_field :turn, :class => :text_field
+  %span.description Ex: a simple text
+
+.group
+  =f.label :action_to
+  =f.error_message_on :action_to
+  =f.text_field :action_to, :class => :text_field
+  %span.description Ex: a simple text
+
+
+.group.navform.wat-cf
+  =f.submit pat(:save), :class => :button
+  =f.submit pat(:cancel), :onclick => "window.location='#{url(:games, :index)}';return false", :class => :button

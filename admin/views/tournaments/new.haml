@@ -1,0 +1,14 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first=link_to pat(:list), url(:tournaments, :index)
+      %li.active=link_to pat(:new), url(:tournaments, :new)
+  .content
+    %h2.title
+      =pat(:new)
+      =mt(:tournament)
+    .inner
+      -form_for :tournament, url(:tournaments, :create), :class => :form do |f|
+        =partial "tournaments/form", :locals => { :f => f }
+
+-content_for :sidebar, partial("base/sidebar")
