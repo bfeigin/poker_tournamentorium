@@ -27,7 +27,7 @@ ActiveRecord::Base.configurations[:production] = {
 
 ActiveRecord::Base.configurations[:test] = {
   :adapter => 'sqlite3',
-  :database => Padrino.root('db', "enova_poker_test.db")
+  :database => Padrino.root('db', "enova_poker_development.db")
 
 }
 
