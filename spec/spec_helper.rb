@@ -6,6 +6,11 @@ RSpec.configure do |conf|
   conf.include Rack::Test::Methods
 end
 
+# Clean out the database before each test run.
+require 'database_cleaner'
+DatabaseCleaner.strategy = :truncation
+DatabaseCleaner.clean
+
 def app
   ##
   # You can handle all padrino applications using instead:
