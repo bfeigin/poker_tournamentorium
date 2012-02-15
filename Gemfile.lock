@@ -16,6 +16,8 @@ GEM
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
     diff-lcs (1.1.3)
+    factory_girl (2.3.2)
+      activesupport
     grit (2.4.1)
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
@@ -95,6 +97,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   bcrypt-ruby
+  factory_girl
   haml
   padrino (= 0.10.5)
   rack-test
