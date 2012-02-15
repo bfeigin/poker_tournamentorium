@@ -16,8 +16,8 @@ GEM
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
     diff-lcs (1.1.3)
-    factory_girl (2.3.2)
-      activesupport
+    factory_girl (2.5.2)
+      activesupport (>= 2.3.9)
     grit (2.4.1)
       diff-lcs (~> 1.1)
       mime-types (~> 1.15)
