@@ -18,6 +18,8 @@
             %td.first=tournament.id
             %td=tournament.name
             %td.last
+              =button_to pat(:show), url(:tournaments, :show, :id => tournament.id), :method => :get, :class => :button_to
+              ="|"
               =button_to pat(:edit), url(:tournaments, :edit, :id => tournament.id), :method => :get, :class => :button_to
               ="|"
               =button_to pat(:delete), url(:tournaments, :destroy, :id => tournament.id), :method => :delete, :class => :button_to, :onsubmit => "return confirm('#{pat(:confirm)}')"

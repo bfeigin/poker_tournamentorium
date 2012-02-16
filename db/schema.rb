@@ -1,4 +1,3 @@
-# encoding: UTF-8
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -13,22 +12,37 @@
 
 ActiveRecord::Schema.define(:version => 9) do
 
-  create_table "tournaments", :force => true do |t|
+  create_table "accounts", :force => true do |t|
     t.string "name"
+    t.string "surname"
+    t.string "email"
+    t.string "crypted_password"
+    t.string "role"
   end
 
-  create_table "players", :force => true do |t|
-   t.integer "tournament_id"
-    t.string  "hostname"
-    t.integer "chips"
-    t.string  "name"
-  end
-
-  create_table "seatings", :force => true do |t|
-    t.integer "player_id"
+  create_table "actions", :force => true do |t|
     t.integer "game_id"
-    t.integer "seat_number"
-    t.boolean "active"
+    t.string  "betting_round"
+    t.integer "turn_number"
+    t.string  "action"
+    t.integer "amount"
+    t.integer "player_id"
+  end
+
+  create_table "bet", :force => true do |t|
+    t.integer "game_id"
+    t.string  "betting_round"
+    t.integer "turn_number"
+    t.string  "action"
+    t.integer "amount"
+    t.integer "player_id"
+  end
+
+  create_table "cards", :force => true do |t|
+    t.string  "value"
+    t.string  "suit"
+    t.integer "player_id"
+    t.integer "hand_id"
   end
 
   create_table "games", :force => true do |t|
@@ -42,31 +56,28 @@ ActiveRecord::Schema.define(:version => 9) do
     t.string  "cards"
   end
 
-  create_table "round", :force => true do |t|
-    t.integer 'hand_id'
-    t.string 'betting_phase'
-  end
-  create_table "actions", :force => true do |t|
-    t.integer "round_id"
-    t.integer "player_id"
-    t.string  "action"
-    t.integer "amount"
+  create_table "players", :force => true do |t|
+    t.integer "tournament_id"
+    t.string  "hostname"
+    t.integer "chips"
+    t.string  "name"
   end
 
-  create_table "cards", :force => true do |t|
-    t.string  "value"
-    t.string  "suit"
-    t.integer "player_id"
-    t.integer "hand_id"
+  create_table "rounds", :force => true do |t|
+    t.string  "betting_round"
+    t.integer "dealer_position"
+    t.integer "game_id"
   end
 
-  create_table "accounts", :force => true do |t|
+  create_table "seatings", :force => true do |t|
+    t.integer "player_id"
+    t.integer "game_id"
+    t.integer "seat_number"
+    t.boolean "active"
+  end
+
+  create_table "tournaments", :force => true do |t|
     t.string "name"
-    t.string "surname"
-    t.string "email"
-    t.string "crypted_password"
-    t.string "role"
   end
-
 
 end

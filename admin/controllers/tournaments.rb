@@ -20,6 +20,11 @@ Admin.controllers :tournaments do
     end
   end
 
+  get :show, :with => :id do
+    @tournament = Tournament.find(params[:id])
+    render 'tournaments/show'
+  end
+
   get :edit, :with => :id do
     @tournament = Tournament.find(params[:id])
     render 'tournaments/edit'
@@ -43,5 +48,13 @@ Admin.controllers :tournaments do
       flash[:error] = 'Unable to destroy Tournament!'
     end
     redirect url(:tournaments, :index)
+  end
+
+  # Seat all available players at new games.
+  post :seat do
+    @tournament = Tournament.find(params[:id])
+    @tournament.seat!
+    flash[:notice] = 'Seating has begun.'
+    redirect url(:tournaments, :show, :id => @tournament.id)
   end
 end
