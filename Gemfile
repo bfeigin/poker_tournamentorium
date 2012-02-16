@@ -23,6 +23,7 @@ gem 'database_cleaner', :group => "test"
 # Padrino Stable Gem
 gem 'padrino', '0.10.5'
 
+
 # Or Padrino Edge
 # gem 'padrino', :git => 'git://github.com/padrino/padrino-framework.git'
 
@@ -30,3 +31,7 @@ gem 'padrino', '0.10.5'
 # %w(core gen helpers cache mailer admin).each do |g|
 #   gem 'padrino-' + g, '0.10.5'
 # end
+group :development do
+  gem 'guard'
+  gem 'rb-readline'
+end

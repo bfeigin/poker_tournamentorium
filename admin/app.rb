@@ -33,7 +33,7 @@ class Admin < Padrino::Application
   access_control.roles_for :admin do |role|
     role.project_module :actions, "/actions"
     role.project_module :hands, "/hands"
-    role.project_module :games, "/games"
+    role.project_module :tables, "/tables"
     role.project_module :players, "/players"
     role.project_module :tournaments, "/tournaments"
     role.project_module :accounts, "/accounts"

@@ -1,0 +1,33 @@
+.block
+  .secondary-navigation
+    %ul.wat-cf
+      %li.first.active=link_to pat(:list), url(:tables, :index)
+      %li=link_to pat(:new), url(:tables, :new)
+  .content
+    %h2.title
+      =pat(:all)
+      =mt(:tables)
+    .inner
+      %table.table
+        %tr
+          %th.first=mat(:table, :id)
+          %th=mat(:table, :tournament_id)
+          %th=mat(:table, :betting_round)
+          %th=mat(:table, :turn)
+          %th=mat(:table, :action_to)
+          %th.last="&nbsp;"
+        -@tables.each do |table|
+          %tr
+            %td.first=table.id
+            %td=table.tournament_id
+            %td=table.betting_round
+            %td=table.turn
+            %td=table.action_to
+            %td.last
+              =button_to pat(:edit), url(:tables, :edit, :id => table.id), :method => :get, :class => :button_to
+              ="|"
+              =button_to pat(:delete), url(:tables, :destroy, :id => table.id), :method => :delete, :class => :button_to, :onsubmit => "return confirm('#{pat(:confirm)}')"
+      .actions-bar.wat-cf
+        .actions="&nbsp;"
+
+-content_for :sidebar, partial("base/sidebar")

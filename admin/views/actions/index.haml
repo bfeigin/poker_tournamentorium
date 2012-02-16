@@ -11,7 +11,7 @@
       %table.table
         %tr
           %th.first=mat(:action, :id)
-          %th=mat(:action, :game_id)
+          %th=mat(:action, :table_id)
           %th=mat(:action, :betting_round)
           %th=mat(:action, :turn_number)
           %th=mat(:action, :action)
@@ -21,7 +21,7 @@
         -@actions.each do |action|
           %tr
             %td.first=action.id
-            %td=action.game_id
+            %td=action.table_id
             %td=action.betting_round
             %td=action.turn_number
             %td=action.action

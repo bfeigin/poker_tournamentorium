@@ -1,8 +1,8 @@
 class Player < ActiveRecord::Base
   belongs_to :tournament
   has_one :seating
-  has_many :games, :through => :seatings do
-    def current_game
+  has_many :tables, :through => :seatings do
+    def current_table
       where(:active => true)
     end
   end
