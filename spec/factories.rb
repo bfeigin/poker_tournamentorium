@@ -13,4 +13,18 @@ FactoryGirl.define do
     tournament
   end
 
+  factory :game_table do
+    tournament
+    hands_played 0
+  end
+
+  factory :hand do
+    game_table
+    active true
+  end
+
+  factory :round do
+    hand
+  end
+
 end

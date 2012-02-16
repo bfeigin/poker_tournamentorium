@@ -34,4 +34,6 @@ gem 'padrino', '0.10.5'
 group :development do
   gem 'guard'
   gem 'rb-readline'
+  gem 'libnotify'
+  gem 'growl'
 end
