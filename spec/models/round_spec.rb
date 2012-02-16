@@ -6,8 +6,8 @@ describe "Round Model" do
     round.should_not be_nil
   end
 
-  it 'knows the betting rounds for texas holdem' do 
-    round.rounds_for(:texas_holdem).should == [:pre_flop, :flop, :turn, :river]
+  it 'knows the betting phases for texas holdem' do 
+    Round.betting_phases_for(:texas_holdem).should == [:pre_flop, :flop, :turn, :river]
   end
   
 end

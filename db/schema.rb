@@ -25,26 +25,26 @@ ActiveRecord::Schema.define(:version => 9) do
 
   create_table "seatings", :force => true do |t|
     t.integer "player_id"
-    t.integer "table_id"
+    t.integer "game_table_id"
     t.integer "seat_number"
     t.boolean "active"
   end
 
-  create_table "tables", :force => true do |t|
+  create_table "game_tables", :force => true do |t|
     t.integer "tournament_id"
     t.integer "hands_played"
-    t.string "game_type"
+    t.string "game_type", :null => false, :default => 'texas_holdem'
   end
 
   create_table "hands", :force => true do |t|
-    t.integer "table_id"
-    t.string  "cards"
+    t.integer "game_table_id"
+    t.boolean "active", :null => false, :default => false
   end
     
   create_table "rounds", :force => true do |t|
     t.integer 'hand_id'
     t.string 'betting_phase'
-    t.boolean 'open'
+    t.boolean 'open', :null => false, :default => false
   end 
 
   create_table "actions", :force => true do |t|
@@ -59,6 +59,7 @@ ActiveRecord::Schema.define(:version => 9) do
     t.string  "suit"
     t.integer "player_id"
     t.integer "hand_id"
+    t.string  "type"
   end
 
   create_table "accounts", :force => true do |t|
