@@ -35,7 +35,10 @@ GEM
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
+    metaclass (0.0.1)
     mime-types (1.17.2)
+    mocha (0.10.0)
+      metaclass (~> 0.0.1)
     multi_json (1.0.4)
     padrino (0.10.5)
       padrino-admin (= 0.10.5)
@@ -107,6 +110,7 @@ DEPENDENCIES
   factory_girl
   guard
   haml
+  mocha
   padrino (= 0.10.5)
   rack-test
   rake

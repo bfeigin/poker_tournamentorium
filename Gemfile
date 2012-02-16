@@ -16,6 +16,7 @@ gem 'sqlite3'
 
 # Test requirements
 gem 'rspec', :group => "test"
+gem 'mocha', :group => "test"
 gem 'rack-test', :require => "rack/test", :group => "test"
 gem 'factory_girl', :require => "factory_girl", :group => "test"
 gem 'database_cleaner', :group => "test"

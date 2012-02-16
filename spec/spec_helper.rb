@@ -4,6 +4,7 @@ require File.expand_path(File.dirname(__FILE__) + "/factories")
 
 RSpec.configure do |conf|
   conf.include Rack::Test::Methods
+  conf.mock_with :mocha
 end
 
 # Clean out the database before each test run.
