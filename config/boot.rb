@@ -24,6 +24,7 @@ end
 # Add your after load hooks here
 #
 Padrino.after_load do
+  EnovaPoker.prerequisites << Padrino.root('lib/*.rb')
 end
 
 Padrino.load!

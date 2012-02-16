@@ -1,4 +1,6 @@
 class Player < ActiveRecord::Base
+  include RemotePlayer
+
   belongs_to :tournament
   has_one :seating
   has_many :tables, :through => :seatings do
