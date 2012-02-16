@@ -29,15 +29,6 @@ ActiveRecord::Schema.define(:version => 9) do
     t.integer "player_id"
   end
 
-  create_table "bet", :force => true do |t|
-    t.integer "game_id"
-    t.string  "betting_round"
-    t.integer "turn_number"
-    t.string  "action"
-    t.integer "amount"
-    t.integer "player_id"
-  end
-
   create_table "cards", :force => true do |t|
     t.string  "value"
     t.string  "suit"
@@ -47,13 +38,15 @@ ActiveRecord::Schema.define(:version => 9) do
 
   create_table "games", :force => true do |t|
     t.integer "tournament_id"
-    t.integer "hands_played"
+    t.string  "betting_round"
+    t.integer "turn"
+    t.integer "action_to"
   end
 
   create_table "hands", :force => true do |t|
-    t.integer "game_id"
-    t.string  "betting_round"
+    t.integer "player_id"
     t.string  "cards"
+    t.integer "turn_number"
   end
 
   create_table "players", :force => true do |t|
@@ -61,12 +54,6 @@ ActiveRecord::Schema.define(:version => 9) do
     t.string  "hostname"
     t.integer "chips"
     t.string  "name"
-  end
-
-  create_table "rounds", :force => true do |t|
-    t.string  "betting_round"
-    t.integer "dealer_position"
-    t.integer "game_id"
   end
 
   create_table "seatings", :force => true do |t|
