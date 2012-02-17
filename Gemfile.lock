@@ -113,8 +113,8 @@ DEPENDENCIES
   growl
   guard
   haml
-  mocha
   libnotify
+  mocha
   padrino (= 0.10.5)
   rack-test
   rake

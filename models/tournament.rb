@@ -5,11 +5,11 @@ class Tournament < ActiveRecord::Base
   # Attempt to seat all available players.
   def seat!
     # Create a table. If it fills up, we'll add another one.
-    current_table = tables.create()
+    current_table = game_tables.create()
 
     players.each do |p|
       if current_table.full?
-        current_table = tables.create
+        current_table = game_tables.create
       end
 
       p.seat(current_table)

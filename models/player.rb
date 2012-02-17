@@ -3,12 +3,29 @@ class Player < ActiveRecord::Base
 
   belongs_to :tournament
   has_one :seating
-  has_many :tables, :through => :seatings do
+  has_and_belongs_to_many :game_tables, :join_table => :seatings do
     def current_table
-      where(:active => true)
+      where(:seatings => {:active => true}).first
     end
   end
 
   validates_presence_of :tournament
+  
+  # Attempt to seat.
+  def seat(table)
+    if accepts_seat?(table)
+      sit_at(table)
+      return true
+    else
+      return false
+    end
+  end
+
+
+  private
+  
+  def sit_at(table)
+    Seating.create(:player => self, :game_table => table, :active => true)
+  end
 
 end

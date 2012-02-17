@@ -11,6 +11,10 @@ describe "GameTable Model" do
     game_table.game_type.should_not be_nil
   end
 
+  it 'should start off not full' do
+    game_table.full?.should be_false
+  end
+
   describe 'playing a hand' do
     it 'can begin a new hand' do
       game_table.begin_hand
