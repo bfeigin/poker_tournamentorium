@@ -6,8 +6,13 @@ describe "Round Model" do
     round.should_not be_nil
   end
 
-  it 'knows the betting phases for texas holdem' do 
-    Round.betting_phases_for(:texas_holdem).should == [:pre_flop, :flop, :turn, :river]
+  it 'should be opened by default' do
+    round.open.should be_true
   end
-  
+
+  it 'can be closed' do
+    round.close!
+    round.open.should be_false
+  end
+
 end

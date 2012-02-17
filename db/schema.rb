@@ -44,8 +44,9 @@ ActiveRecord::Schema.define(:version => 9) do
   create_table "rounds", :force => true do |t|
     t.integer 'hand_id'
     t.string 'betting_phase'
-    t.boolean 'open', :null => false, :default => false
+    t.boolean 'open', :null => false, :default => true
   end 
+  #add_index "rounds", ['hand_id', 'open'], :where  => "open = 't'", :name => 'open_round_in_hand', :unique => true
 
   create_table "actions", :force => true do |t|
     t.integer "round_id"

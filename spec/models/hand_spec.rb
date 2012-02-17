@@ -5,4 +5,29 @@ describe "Hand Model" do
   it 'can be created' do
     hand.should_not be_nil
   end
+  it 'knows the betting phases for texas holdem' do 
+    hand.betting_phases.should == [:pre_flop, :flop, :turn, :river]
+  end
+
+  it 'should never allow a nil betting phase' do
+    hand.betting_phases.index(nil).should be_nil
+  end
+
+  context 'betting rounds' do
+    it 'can open a new round' do
+      hand.next_round!
+    end
+
+    it 'should start with first betting phase' do
+      hand.next_round!.betting_phase.should == hand.betting_phases.first.to_s
+    end
+    
+    it 'should open up a new round for each betting phase' do
+      hand.betting_phases.each do |phase|
+        hand.next_round!
+        hand.rounds.currently_open.betting_phase.should == phase.to_s
+        hand.rounds.where(:open => true).size.should == 1
+      end
+    end
+  end
 end
