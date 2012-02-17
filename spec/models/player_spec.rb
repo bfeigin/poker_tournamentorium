@@ -20,11 +20,17 @@ describe "Player Model" do
       @player = Factory.create(:player)
       @table = Factory.create(:game_table)
       @player.hostname = "testhost"
-      
     end
 
-    it "should seat the player if the client returns a 200 from a POST to hostname/seating" do
-      FakeWeb.register_uri(:post, "testhost/seating",
+    it "should check if the player is ready via a GET to hostname/player/ready" do
+      FakeWeb.register_uri(:get, "testhost/player/ready", 
+            { :body => "", :status => ["200", "Okay"] })
+
+      @player.ready?.should be_true
+    end
+
+    it "should seat the player if the client returns a 200 from a POST to hostname/player/seat" do
+      FakeWeb.register_uri(:post, "testhost/player/seat",
             { :body => "", :status => ["200", "Okay"] })
 
       @player.seat(@table)
@@ -33,7 +39,7 @@ describe "Player Model" do
     end
 
     it "should not seat the player if the client returns a 403" do
-      FakeWeb.register_uri(:post, "testhost/seating",
+      FakeWeb.register_uri(:post, "testhost/player/seat",
             { :body => "", :status => ["403", "Not Gonna Bother"] })
 
       @player.seat(@table)

@@ -20,10 +20,19 @@ describe "Tournament Model" do
     tournament = Factory.create :tournament
 
     tournament.expects(:players).returns([
-                                            mock("player 1", :seat => true),
-                                            mock("player 2", :seat => true),
-                                            mock("player 3", :seat => true) 
+                                            mock("player 1", :seat => true, :ready? => true),
+                                            mock("player 2", :seat => true, :ready? => true),
+                                            mock("player 3", :seat => true, :ready? => true) 
                                          ])
+
+    tournament.seat!
+  end
+
+  it "should check if a player is ready to seat first" do
+    tournament = Factory.create :tournament
+    p = Factory.create :player, :tournament => tournament
+    tournament.expects(:players).returns([p])
+    p.expects(:ready?)
 
     tournament.seat!
   end
@@ -34,6 +43,7 @@ describe "Tournament Model" do
     9.times do 
       p = Factory.create :player, :tournament => tournament
     end
+    Player.any_instance.expects(:ready?).at_least_once.returns(true)
     Player.any_instance.expects(:accepts_seat?).at_least_once.returns(true)
 
     tournament.seat!
