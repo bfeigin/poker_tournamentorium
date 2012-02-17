@@ -18,6 +18,7 @@ gem 'rest-client'
 # Test requirements
 gem 'rspec', :group => "test"
 gem 'mocha', :group => "test"
+gem 'fakeweb', :group => "test"
 gem 'cucumber-sinatra', :group => "test"
 gem 'cucumber', :group => "test"
 gem 'capybara', :group => "test"
