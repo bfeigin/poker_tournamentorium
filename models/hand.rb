@@ -1,24 +1,51 @@
 class Hand < ActiveRecord::Base
   belongs_to :game_table
-  has_many :players, :through  => :game_tables
+
+  has_many :players, :through  => :game_table do 
+    #MUST ORDER IN REFERENCE TO DEALER POSITION!
+    #DEALER SHOULD BE THE **LAST** PLAYER!
+    def active_players
+      []
+    end
+  end
 
   has_many :rounds do
     def currently_open
       where(:open => true).first
     end
   end
+  
+  def deck
+    @deck ||= Deck.new
+  end
 
-  def next_round!
-    save
-    if next_betting_phase
-      if rounds.currently_open
-        rounds.currently_open.close!
-      end
-      rounds.create(:betting_phase => next_betting_phase)
-    else
-      close_hand!
+
+  def play!
+    save 
+    deal_pocket_cards!
+    while next_round do
+      rounds.currently_open.play!
     end
-    rounds.currently_open
+    close_hand!
+  end
+
+  def deal_pocket_cards!
+    2.times do 
+      active_players.each do |player|
+        Card.create(deck.card!.merge(:player => player, :hand => self))
+      end
+    end
+  end
+
+  def next_round
+    if next_betting_phase
+      rounds.create(:betting_phase => next_betting_phase, :open => true, :hand => self)
+    else
+      false
+    end
+  end
+
+  def close_hand!
   end
 
   #If we have a currently open round, then get the betting phase after that
@@ -37,6 +64,10 @@ class Hand < ActiveRecord::Base
   # Can never have nil
   def betting_phases
     @betting_phases ||= [:pre_flop, :flop, :turn, :river]
+  end
+
+  def active_players
+    players.active_players
   end
 
 end

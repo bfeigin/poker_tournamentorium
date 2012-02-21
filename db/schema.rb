@@ -33,11 +33,13 @@ ActiveRecord::Schema.define(:version => 9) do
   create_table "game_tables", :force => true do |t|
     t.integer "tournament_id"
     t.integer "hands_played"
+    t.integer "dealer_position", :null => false, :default => 0
     t.string "game_type", :null => false, :default => 'texas_holdem'
   end
 
   create_table "hands", :force => true do |t|
     t.integer "game_table_id"
+    t.string  "community_cards"
     t.boolean "active", :null => false, :default => false
   end
     
@@ -60,7 +62,6 @@ ActiveRecord::Schema.define(:version => 9) do
     t.string  "suit"
     t.integer "player_id"
     t.integer "hand_id"
-    t.string  "type"
   end
 
   create_table "accounts", :force => true do |t|

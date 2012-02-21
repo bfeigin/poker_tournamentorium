@@ -1,5 +1,6 @@
 require 'factory_girl'
 
+MAX_PLAYERS = 8
 FactoryGirl.define do
   factory :tournament do
     name "The Poker Tournament"
@@ -9,8 +10,23 @@ FactoryGirl.define do
     sequence :name do |n|
       "Player ##{n}"
     end
-
+    
     tournament
+  end
+
+  factory :seating do
+    player
+    game_table
+    sequence :seat_number do |n|
+      n % MAX_PLAYERS
+    end
+  end
+
+  factory :action do
+    player
+    round
+    action 'bet'
+    amount 200
   end
 
   factory :game_table do
