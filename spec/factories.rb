@@ -40,6 +40,7 @@ FactoryGirl.define do
   end
 
   factory :round do
+    betting_phase 'flop'
     hand
   end
 

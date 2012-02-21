@@ -10,7 +10,7 @@ class Round < ActiveRecord::Base
     @active_players = hand.active_players
     @max_bet = @active_players.max_by{|player| player.chips_available}
 
-    close! unless @active_players.size >= 2
+    close! unless enough_players?
 
     if betting_phase.to_sym == hand.betting_phases.first
       call_blinds(hand.game_table.small_blind)
@@ -18,16 +18,29 @@ class Round < ActiveRecord::Base
 
     @current_bet ||= 0
 
-    while (action_to.current_bet != @current_bet) do
-      action = action_to.get_action
-      next_player!
-      if action.is_fold? 
-        @active_players.delete!(action_to)
+    while ( enough_players? && 
+            (player = action_to) && 
+            (bet = player.current_bet) != @current_bet) do
+      puts "Active players: #{@active_players.inspect}"
+      puts "Min bet: $#{@current_bet}"
+      puts "Action to #{player.inspect} with current bet #{bet}"
+
+      action = player.get_action
+      next_player! # Rotate first, to ensure progress.
+
+      if action.is_fold?         
+        puts "Fold."
+        @active_players.delete(player)
       else
+        puts "Bet of #{action.amount}."
         @current_bet = action.amount
       end
     end
     close!
+  end
+
+  def enough_players?
+    @active_players.size > 1
   end
 
   def next_player!
