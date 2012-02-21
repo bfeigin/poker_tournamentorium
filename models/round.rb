@@ -11,6 +11,9 @@ class Round < ActiveRecord::Base
   end
 
   def play!
+    puts "entering round #{inspect}"
+    puts "entering round with hand #{hand.inspect}"
+    puts "with players #{hand.players}"
     @active_players = hand.active_players
     @max_bet = @active_players.max_by{|player| player.chips}
 
@@ -52,6 +55,7 @@ class Round < ActiveRecord::Base
     @current_bet = action.amount
     true
   end
+
   def actions_taken
     actions
   end
@@ -66,13 +70,14 @@ class Round < ActiveRecord::Base
 
   def call_blinds(small_blind)
     (1..2).each do |blind|
-      action_to.blind!(small_blind * blind)
+      action_to.blind(small_blind * blind)
       next_player!
     end
     @current_bet = small_blind * 2
   end
 
   def action_to
+    puts "active Players #{@active_players.inspect}"
     @active_players.first
   end
 

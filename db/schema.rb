@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(:version => 9) do
     t.integer "player_id"
     t.integer "game_table_id"
     t.integer "seat_number"
-    t.boolean "active"
+    t.boolean "active", :null => false, :default => true
   end
 
   create_table "game_tables", :force => true do |t|

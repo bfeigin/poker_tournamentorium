@@ -18,6 +18,10 @@ class Player < ActiveRecord::Base
     last_bet && last_bet.amount
   end
 
+  def blind(amount)
+    actions.create(:amount => amount, :action_name => 'blind')
+  end
+  
   # Attempt to seat.
   def seat(table)
     if accepts_seat?(table)

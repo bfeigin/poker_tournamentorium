@@ -24,7 +24,7 @@ module RemotePlayer
     end
   end
 
-  def get_action(round)
+  def get_action
     puts "trying to get action!"
   end
 end

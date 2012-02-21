@@ -1,14 +1,6 @@
 class Hand < ActiveRecord::Base
   belongs_to :game_table
 
-  has_many :players, :through  => :game_table do 
-    #MUST ORDER IN REFERENCE TO DEALER POSITION!
-    #DEALER SHOULD BE THE **LAST** PLAYER!
-    def active_players
-      []
-    end
-  end
-
   has_many :rounds do
     def currently_open
       where(:open => true).first
@@ -66,8 +58,12 @@ class Hand < ActiveRecord::Base
     @betting_phases ||= [:pre_flop, :flop, :turn, :river]
   end
 
+  def players
+    game_table.players
+  end
+
   def active_players
-    players.active_players
+    players.all
   end
 
 end
