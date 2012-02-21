@@ -3,6 +3,8 @@ class Player < ActiveRecord::Base
 
   belongs_to :tournament
   has_one :seating
+  has_many :actions
+
   has_and_belongs_to_many :game_tables, :join_table => :seatings do
     def current_table
       where(:seatings => {:active => true}).first
@@ -10,7 +12,12 @@ class Player < ActiveRecord::Base
   end
 
   validates_presence_of :tournament
-  
+
+  def current_bet
+    last_bet = actions.where(:action_name => 'bet').last
+    last_bet && last_bet.amount
+  end
+
   # Attempt to seat.
   def seat(table)
     if accepts_seat?(table)

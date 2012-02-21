@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(:version => 9) do
   create_table "actions", :force => true do |t|
     t.integer "round_id"
     t.integer "player_id"
-    t.string  "action"
+    t.string  "action_name"
     t.integer "amount"
   end
     

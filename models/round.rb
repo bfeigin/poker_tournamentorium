@@ -6,9 +6,13 @@ class Round < ActiveRecord::Base
   attr_accessor :current_bet
   attr_accessor :active_players
 
+  def non_blinds_for_player(player)
+     actions.where("action_name NOT in ('blind')").where(:player_id => player)
+  end
+
   def play!
     @active_players = hand.active_players
-    @max_bet = @active_players.max_by{|player| player.chips_available}
+    @max_bet = @active_players.max_by{|player| player.chips}
 
     close! unless enough_players?
 
@@ -18,12 +22,17 @@ class Round < ActiveRecord::Base
 
     @current_bet ||= 0
 
+    puts
     while ( enough_players? && 
             (player = action_to) && 
-            (bet = player.current_bet) != @current_bet) do
-      puts "Active players: #{@active_players.inspect}"
+            ((non_blinds_for_player(player).size == 0) ||
+            (bet = player.current_bet) != @current_bet)) do 
+      puts "non_blinds: #{non_blinds_for_player(player).all}"
+      puts "actions: #{actions.where(:player_id => player).all}"
+      #puts "Active players: #{@active_players.inspect}"
       puts "Min bet: $#{@current_bet}"
       puts "Action to #{player.inspect} with current bet #{bet}"
+      puts 
 
       action = player.get_action
       next_player! # Rotate first, to ensure progress.
@@ -33,10 +42,18 @@ class Round < ActiveRecord::Base
         @active_players.delete(player)
       else
         puts "Bet of #{action.amount}."
-        @current_bet = action.amount
+        accept_bet(action)
       end
     end
     close!
+  end
+
+  def accept_bet(action)
+    @current_bet = action.amount
+    true
+  end
+  def actions_taken
+    actions
   end
 
   def enough_players?

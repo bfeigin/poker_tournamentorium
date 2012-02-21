@@ -3,7 +3,7 @@ class Action < ActiveRecord::Base
   belongs_to :round
 
   def is_fold?
-    return action == 'fold'
+    return action_name == 'fold'
   end
 
 end

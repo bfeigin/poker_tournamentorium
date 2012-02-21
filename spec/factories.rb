@@ -25,7 +25,7 @@ FactoryGirl.define do
   factory :action do
     player
     round
-    action 'bet'
+    action_name 'bet'
     amount 200
   end
 

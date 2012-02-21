@@ -16,38 +16,55 @@ describe "Round Model" do
   end
 
   context 'when playing' do
+    let(:round) { Factory.create(:round)}
+    let(:p1) {Factory.create(:player, :chips => 1000)}
+    let(:p2) {Factory.create(:player, :chips => 1000)}
+    let(:players) {[p1,p2]}
+
+
     before :each do
       @turn_sequence = sequence('hand')
+      round.hand.stubs(:active_players).returns(players)
+      $betting_sequence = []
+      class Player
+        def get_action
+          $betting_sequence.delete_at(0).call
+        end
+      end
     end
 
-    def bet(player, old_bet, amount)
-      player.expects(:current_bet).in_sequence(@turn_sequence).returns(old_bet)
-      player.expects(:get_action).in_sequence(@turn_sequence).returns(Factory.create(:action, :action => "bet", :amount => amount))
+    def bet(player,  amount)
+      $betting_sequence <<  lambda{ Factory.create(:action, :action_name => "bet", :amount => amount, :round => round, :player => player)}
     end
     
     def fold(player, old_bet)
-      player.expects(:current_bet).in_sequence(@turn_sequence).returns(old_bet)
-      player.expects(:get_action).in_sequence(@turn_sequence).returns(Factory.create(:action, :action => "fold"))
+      $betting_sequence <<  lambda{ Factory.create(:action, :action_name => "fold", :round => round, :player => player)}
+    end
+
+    def blind(player, amount)
+      $betting_sequence << lambda{ Factory.create(:action, :action_name => "blind", :amount => amount, :round => round, :player => player)}
+    end
+
+    it 'should blind correctly ' do
+      blind(p1,50)
+      blind(p2,100)
+      bet(p1,100)
+      bet(p2,200)
+      bet(p1,200)
+      round.play!
     end
 
     it 'should rotate around players until the bet equalizes' do
-      round = Factory.create(:round)
+      round.betting_phase = 'flop'
 
-      p1 = stub('Player 1', :chips_available => 1000)
-      p2 = stub('Player 2', :chips_available => 1000)
-      players = [p1, p2]
-      round.hand.stubs(:active_players).returns(players)
-
-      # Player 1 raises
-      bet(p1, 25, 50)
+      # Player 1 bets 50
+      bet(p1, 50)
 
       # Player 2 raises
-      bet(p2, 25, 100)
+      bet(p2, 100)
 
       # Player 1 calls
-      bet(p1, 50, 100)
-      
-      p2.expects(:current_bet).in_sequence(@turn_sequence).returns(100)
+      bet(p1, 100)
 
       # Round should end.
 
@@ -57,12 +74,6 @@ describe "Round Model" do
     end
 
     it 'should remove a player from the hand once they fold' do
-      round = Factory.create(:round)
-
-      p1 = stub('Player 1', :chips_available => 1000)
-      p2 = stub('Player 2', :chips_available => 1000)
-      players = [p1, p2]
-      round.hand.stubs(:active_players).returns(players)
 
       # Player 1 folds
       fold(p1, 50)
@@ -74,5 +85,4 @@ describe "Round Model" do
       players.should == [p2]
     end
   end
-
 end

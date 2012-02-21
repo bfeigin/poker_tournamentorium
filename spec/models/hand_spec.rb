@@ -41,20 +41,4 @@ describe "Hand Model" do
       end
     end
   end
-    
-  context 'playing the game' do
-    context 'full game no-actions' do
-      before :each do 
-        Player.any_instance.stubs(:chips_available).returns(200)
-        Player.any_instance.stubs(:blind!).returns(FactoryGirl.create(:action))
-        Player.any_instance.stubs(:current_bet).returns(200)
-        Player.any_instance.stubs(:get_action).returns(FactoryGirl.create(:action))
-        Hand.any_instance.stubs(:active_players).returns(FactoryGirl.create_list(:player,3))
-      end
-      it 'can be played' do
-        hand.play!
-        hand.rounds.size.should == 4
-      end
-    end
-  end
 end
