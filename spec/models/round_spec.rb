@@ -58,7 +58,6 @@ describe "Round Model" do
     end
 
     it 'should remove a player from the hand once they fold' do
-
       # Player 1 folds
       fold(p1)
 
@@ -67,6 +66,29 @@ describe "Round Model" do
       round.play!
 
       players.should == [p2]
+    end
+  end
+
+  context 'when validating bets' do
+    before :each do
+      @r = Round.new
+      @r.stubs(:current_bet).returns(50)
+    end
+
+    it "should validate a valid bet" do
+      @r.validate_action(:action => "bet", :amount => 75).should be_true
+    end
+
+    it "should validate a fold" do
+      @r.validate_action(:action => "fold").should be_true
+    end
+
+    it "should reject an invalid bet" do
+      @r.validate_action(:action => "bet", :amount => 5).should be_false
+    end
+
+    it "should reject a garbled action" do
+      @r.validate_action(:action => "basdfet", :aasdfmount => 5).should be_false
     end
   end
 end

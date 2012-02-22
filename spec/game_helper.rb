@@ -1,5 +1,5 @@
 class Player
-  def get_action
+  def get_action(args)
     $betting_sequence.delete_at(0)
   end
 end

@@ -37,12 +37,11 @@ class Round < ActiveRecord::Base
       puts "Action to #{player.inspect} with current bet #{bet}"
       puts 
 
-      action_hash = player.get_action
+      action_hash = player.get_action(turn_data)
       next_player! # Rotate first, to ensure progress.
 
-      # TODO: validate action
-      if true
-        action = Action.create(:player => player, :round => self, :action_name => action_hash[:action], :amount => action_hash[:amount])
+      if validate_action(action_hash)
+        action = Action.create(:player => player, :round => self, :action_name => action_hash[:action].to_s, :amount => action_hash[:amount].to_i)
       else
         action = Action.create(:player => player, :round => self, :action_name => "fold")
       end
@@ -56,6 +55,24 @@ class Round < ActiveRecord::Base
       end
     end
     close!
+  end
+
+  def validate_action(action_hash)
+    if action_name = action_hash[:action]
+      if action_name.to_s == "bet" || action_name.to_s == "blind"
+        if amount = action_hash[:amount]
+          # A bet is only valid if it meets the minimum bet.
+          amount.to_i >= current_bet
+        end
+      elsif action_name.to_s == "fold"
+        true
+      else
+        false
+      end
+    else
+      # Missing a required parameter.
+      false
+    end
   end
 
   def accept_bet(action)
@@ -75,12 +92,30 @@ class Round < ActiveRecord::Base
     @active_players.rotate!
   end
 
+  # Generate a hash of turn data to send the player.
+  def turn_data(args={})
+    {
+      :minimum_bet => current_bet,
+      :blind       => !!args[:blind]
+    }
+  end
+
   def call_blinds(small_blind)
     (1..2).each do |blind|
-      action_to.blind(small_blind * blind)
+      blind_amount = small_blind * blind
+      @current_bet = blind_amount
+
+      action_hash = action_to.get_action(turn_data(:blind => true))
+      
+      if validate_action(action_hash) && action_hash[:action].to_s == "blind"
+        action = Action.create(:player => action_to, :round => self, :action_name => action_hash[:action].to_s, :amount => action_hash[:amount].to_i)
+      else
+        # TODO: unseat player 
+        raise "player did not post blinds"
+      end
+
       next_player!
     end
-    @current_bet = small_blind * 2
   end
 
   def action_to

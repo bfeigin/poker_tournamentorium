@@ -24,7 +24,8 @@ module RemotePlayer
     end
   end
 
-  def get_action
+  def get_action(data)
     {:action => "fold"}
   end
+ 
 end

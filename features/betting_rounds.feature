@@ -8,8 +8,8 @@ Feature: Betting rounds
     And a player named Alice with 100 chips
     And a player named Bob with 100 chips
     When the hand begins
-    When Alice posts blinds
-    And Bob posts blinds
+    When Alice posts blinds of 1
+    And Bob posts blinds of 2
     And Alice bets 10
     And Bob bets 10
     #Then the round should advance to flop

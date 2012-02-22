@@ -8,7 +8,7 @@ module InteractivePlayer
     true
   end
 
-  def get_action
+  def get_action(data)
     puts "Action to you, #{name}. fold/bet <amount>?"
 
     input = gets

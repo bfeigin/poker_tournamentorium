@@ -30,8 +30,11 @@ When /(\w+) folds/ do |name|
   )
 end
 
-When /(\w+) posts blinds/ do |name|
-  @players[name].expects(:blind).in_sequence(@seq).returns(true)
+When /(\w+) posts blinds of (\d+)/ do |name, chips|
+  @players[name].expects(:get_action).in_sequence(@seq).returns({
+    :action => "blind",
+    :amount => chips
+  })
 end
 
 When /(\w+) fails to post blinds/ do |name|
