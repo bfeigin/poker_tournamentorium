@@ -11,12 +11,12 @@ class Card < ActiveRecord::Base
     face <=> other_card.face
   end
   
-  def is_a?(klass)
-    klass == Card || self === klass
-  end
+  #def is_a?(klass)
+  #  klass == Card || self === klass
+  #end
 
   def == other_card
-    face == other_card.face && suit == suit.value
+    face == other_card.face && suit_code == other_card.suit_code
   end
   alias :eql? :==
 

@@ -30,7 +30,7 @@ class Round < ActiveRecord::Base
             ((non_blinds_for_player(player).size == 0) ||
             (bet = player.current_bet) != @current_bet)) do 
       puts "Min bet: $#{@current_bet}"
-      puts "Action to #{player.inspect} with current bet #{bet}. Hand: #{player.cards.collect { |c| c.value.to_s + c.suit.to_s}}"
+      puts "Action to #{player.inspect} with current bet #{bet}. Hand: #{player.cards.collect { |c| c.value_code.to_s + c.suit_code.to_s}}"
       puts 
 
       action_hash = player.get_action(turn_data)
