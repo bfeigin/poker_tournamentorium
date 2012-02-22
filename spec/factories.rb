@@ -43,5 +43,4 @@ FactoryGirl.define do
     betting_phase 'flop'
     hand
   end
-
 end

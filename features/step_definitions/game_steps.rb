@@ -50,6 +50,20 @@ Then /the round should advance to (\w+)/ do |round|
   @hand.expects(:next_turn).in_sequence(@seq)
 end
 
+Then /^the hand should have (\d+) community cards$/ do |card_count|
+    @hand.community_cards.size.should == card_count.to_i
+end
+
+Then /^each player should have (\d+) pocket cards$/ do |card_count|
+    @players.each do |name, player|
+      player.cards.where(:hand_id => @hand).size.should == card_count.to_i
+    end
+end
+
+Then /^the hand should have community and pocket cards$/ do
+    @hand.cards.size.should == (@players.size * 2) + 5
+end
+
 # This will end the scenario!
 Then /the round should be over/ do
   @hand.expects(:close_hand!).in_sequence(@seq)

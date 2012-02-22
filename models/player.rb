@@ -4,6 +4,7 @@ class Player < ActiveRecord::Base
   belongs_to :tournament
   has_one :seating
   has_many :actions
+  has_many :cards, :as => :dealable
 
   has_and_belongs_to_many :game_tables, :join_table => :seatings do
     def current_table

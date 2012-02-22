@@ -26,3 +26,7 @@ Feature: Betting rounds
     And Alice folds
     Then the round should be over
     When the hand plays out
+    Then the hand should have 5 community cards
+    Then each player should have 2 pocket cards
+    Then the hand should have community and pocket cards
+

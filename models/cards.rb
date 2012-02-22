@@ -1,6 +1,7 @@
 class Card < ActiveRecord::Base
-  belongs_to :player
-  belongs_to :hand
+  belongs_to :dealable, :polymorphic => true
+  belongs_to :hand, :foreign_key => 'hand_id'
+
 
   def ace?
     face_value == 14
