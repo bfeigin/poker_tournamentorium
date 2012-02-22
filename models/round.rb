@@ -40,7 +40,7 @@ class Round < ActiveRecord::Base
       action_hash = player.get_action(turn_data)
       next_player! # Rotate first, to ensure progress.
 
-      if validate_action(action_hash)
+      if validate_action(action_hash, player)
         action = Action.create(:player => player, :round => self, :action_name => action_hash[:action].to_s, :amount => action_hash[:amount].to_i)
       else
         action = Action.create(:player => player, :round => self, :action_name => "fold")
@@ -57,12 +57,12 @@ class Round < ActiveRecord::Base
     close!
   end
 
-  def validate_action(action_hash)
+  def validate_action(action_hash, player)
     if action_name = action_hash[:action]
       if action_name.to_s == "bet" || action_name.to_s == "blind"
         if amount = action_hash[:amount]
           # A bet is only valid if it meets the minimum bet.
-          amount.to_i >= current_bet
+          amount.to_i >= current_bet && player.reload.chips >= amount.to_i
         end
       elsif action_name.to_s == "fold"
         true
@@ -77,6 +77,11 @@ class Round < ActiveRecord::Base
 
   def accept_bet(action)
     @current_bet = action.amount
+
+    # Move money into the pot from the player's chips.
+    self.pot += action.amount
+    action.player.chips -= action.amount
+    action.player.save!
     true
   end
 
@@ -96,7 +101,8 @@ class Round < ActiveRecord::Base
   def turn_data(args={})
     {
       :minimum_bet => current_bet,
-      :blind       => !!args[:blind]
+      :blind       => !!args[:blind],
+      :your_chips  => action_to.reload.chips
     }
   end
 
@@ -107,8 +113,9 @@ class Round < ActiveRecord::Base
 
       action_hash = action_to.get_action(turn_data(:blind => true))
       
-      if validate_action(action_hash) && action_hash[:action].to_s == "blind"
+      if validate_action(action_hash, action_to) && action_hash[:action].to_s == "blind"
         action = Action.create(:player => action_to, :round => self, :action_name => action_hash[:action].to_s, :amount => action_hash[:amount].to_i)
+        accept_bet(action)
       else
         # TODO: unseat player 
         raise "player did not post blinds"

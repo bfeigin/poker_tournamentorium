@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(:version => 9) do
     t.integer 'hand_id'
     t.string 'betting_phase'
     t.boolean 'open', :null => false, :default => true
+    t.integer 'pot', :default => 0
   end 
   #add_index "rounds", ['hand_id', 'open'], :where  => "open = 't'", :name => 'open_round_in_hand', :unique => true
 

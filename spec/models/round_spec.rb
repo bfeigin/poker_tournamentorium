@@ -55,6 +55,7 @@ describe "Round Model" do
       round.play!
 
       players.should =~ [p1, p2]
+      p1.reload.chips.should == 850
     end
 
     it 'should remove a player from the hand once they fold' do
@@ -73,22 +74,25 @@ describe "Round Model" do
     before :each do
       @r = Round.new
       @r.stubs(:current_bet).returns(50)
+
+      @p = stub('player', :chips => 100)
+      @p.stubs(:reload).returns(@p)
     end
 
     it "should validate a valid bet" do
-      @r.validate_action(:action => "bet", :amount => 75).should be_true
+      @r.validate_action({:action => "bet", :amount => 75}, @p).should be_true
     end
 
     it "should validate a fold" do
-      @r.validate_action(:action => "fold").should be_true
+      @r.validate_action({:action => "fold"}, @p).should be_true
     end
 
     it "should reject an invalid bet" do
-      @r.validate_action(:action => "bet", :amount => 5).should be_false
+      @r.validate_action({:action => "bet", :amount => 5}, @p).should be_false
     end
 
     it "should reject a garbled action" do
-      @r.validate_action(:action => "basdfet", :aasdfmount => 5).should be_false
+      @r.validate_action({:action => "basdfet", :aasdfmount => 5}, @p).should be_false
     end
   end
 end
