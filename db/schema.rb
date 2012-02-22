@@ -59,12 +59,12 @@ ActiveRecord::Schema.define(:version => 9) do
   end
     
   create_table "cards", :force => true do |t|
-    t.string :value, :null => false
-    t.string :suit, :null => false
+    t.string :value_code, :null => false
+    t.string :suit_code, :null => false
     t.references :dealable, :polymorphic => true, :null => false
     t.integer :hand_id, :null => false
   end
-  add_index "cards", [:value, :suit, :hand_id], :name => 'non_duplicate_cards_per_hand', :unique => true
+  add_index "cards", [:value_code, :suit_code, :hand_id], :name => 'non_duplicate_cards_per_hand', :unique => true
 
   create_table "accounts", :force => true do |t|
     t.string "name"

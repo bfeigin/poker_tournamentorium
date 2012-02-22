@@ -20,7 +20,7 @@ class Deck
 
   def initialize
     @cards = %w(C D H S).map do |suit|
-      ((2..9).to_a + %w(T J Q K A)).map {|value| {:value => value, :suit => suit}}
+      ((2..9).to_a + %w(T J Q K A)).map {|value| {:value_code => value, :suit_code => suit}}
     end.flatten.uniq.knuth_shuffle!
   end
 end
