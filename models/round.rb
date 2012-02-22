@@ -30,8 +30,8 @@ class Round < ActiveRecord::Base
     while ( enough_players? && 
             (player = action_to) && 
             ((non_blinds_for_player(player).size == 0) ||
-            (bet = player.current_bet) != current_bet)) do 
-      puts "Min bet: $#{current_bet}"
+            (bet = player.current_bet) != @current_bet)) do 
+      puts "Min bet: $#{@current_bet}"
       puts "Action to #{player.inspect} with current bet #{bet}. Hand: #{player.cards.collect { |c| c.value_code.to_s + c.suit_code.to_s}}"
       puts 
 
