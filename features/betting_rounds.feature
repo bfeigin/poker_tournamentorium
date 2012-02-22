@@ -1,6 +1,7 @@
-Feature: Texas Hold'Em
-  In order to run a poker tournament
-  I want the server to correctly handle gameplay
+Feature: Betting rounds
+  In order to allow players to strategically bet on hands
+  I want a hand to have four betting rounds
+  Which follow the rules of betting and observe blinds
 
   Scenario: A one-hand game with simple betting
     Given I have a fresh game table
