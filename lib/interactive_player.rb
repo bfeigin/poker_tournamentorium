@@ -9,7 +9,8 @@ module InteractivePlayer
   end
 
   def get_action(data)
-    puts "Action to you, #{name}. fold/bet <amount>?"
+    puts "Action to you, #{name}. #{data.inspect}"
+    puts "fold/blind <amount>/bet <amount>?"
 
     input = gets
     
@@ -19,6 +20,8 @@ module InteractivePlayer
       parts = input.split(" ")
       if parts.first == "bet"
         {:action => "bet", :amount => parts.last.to_i}
+      elsif parts.first == "blind"
+        {:action => "blind", :amount => parts.last.to_i}
       end
     end
   end

@@ -12,7 +12,6 @@ class Round < ActiveRecord::Base
 
   def play!
     puts "entering round #{inspect}"
-    puts "entering round with hand #{hand.inspect}"
     puts "with players #{hand.players}"
     @active_players = hand.active_players
     @max_bet = @active_players.max_by{|player| player.chips}
@@ -30,9 +29,6 @@ class Round < ActiveRecord::Base
             (player = action_to) && 
             ((non_blinds_for_player(player).size == 0) ||
             (bet = player.current_bet) != @current_bet)) do 
-      puts "non_blinds: #{non_blinds_for_player(player).all}"
-      puts "actions: #{actions.where(:player_id => player).all}"
-      #puts "Active players: #{@active_players.inspect}"
       puts "Min bet: $#{@current_bet}"
       puts "Action to #{player.inspect} with current bet #{bet}"
       puts 
@@ -58,6 +54,8 @@ class Round < ActiveRecord::Base
   end
 
   def validate_action(action_hash, player)
+    return false unless action_hash.is_a? Hash
+
     if action_name = action_hash[:action]
       if action_name.to_s == "bet" || action_name.to_s == "blind"
         if amount = action_hash[:amount]
