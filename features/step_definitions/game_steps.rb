@@ -9,8 +9,6 @@ When /the hand begins/ do
 
   # Workaround to preserve expectations.
   Hand.any_instance.stubs(:active_players).returns(@players.values)
-
-  puts @players.values.collect { |p| p.to_s }.inspect
 end
 
 Given /a player named (\w+) with (\d+) chips/ do |name, chips|
