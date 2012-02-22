@@ -30,7 +30,7 @@ class Round < ActiveRecord::Base
             ((non_blinds_for_player(player).size == 0) ||
             (bet = player.current_bet) != @current_bet)) do 
       puts "Min bet: $#{@current_bet}"
-      puts "Action to #{player.inspect} with current bet #{bet}"
+      puts "Action to #{player.inspect} with current bet #{bet}. Hand: #{player.cards.collect { |c| c.value.to_s + c.suit.to_s}}"
       puts 
 
       action_hash = player.get_action(turn_data)
@@ -97,10 +97,14 @@ class Round < ActiveRecord::Base
 
   # Generate a hash of turn data to send the player.
   def turn_data(args={})
+    action_to.reload
+
     {
-      :minimum_bet => current_bet,
-      :blind       => !!args[:blind],
-      :your_chips  => action_to.reload.chips
+      :minimum_bet      => current_bet,
+      :blind            => !!args[:blind],
+      :your_chips       => action_to.chips,
+      :your_hand        => action_to.cards.as_json,
+      :community_cards  => hand.community_cards.as_json 
     }
   end
 

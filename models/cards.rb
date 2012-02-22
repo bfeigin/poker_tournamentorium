@@ -37,5 +37,12 @@ class Card < ActiveRecord::Base
     end
   end
 
+  # Return just the basic info.
+  def as_json(opts={})
+    {
+      :suit => suit.to_s,
+      :value => value.to_s
+    }
+  end
 end
 
