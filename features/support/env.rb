@@ -10,12 +10,13 @@ require File.join(File.dirname(__FILE__), '..', '..', 'app/app.rb')
 require 'capybara'
 require 'capybara/cucumber'
 require 'rspec'
+require 'mocha'
+require 'spec_helper'
 
 Capybara.app = EnovaPoker
 
 class EnovaPokerWorld
   include Capybara::DSL
-  include RSpec::Expectations
   include RSpec::Matchers
 end
 
