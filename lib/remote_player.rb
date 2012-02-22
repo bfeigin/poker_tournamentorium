@@ -25,6 +25,6 @@ module RemotePlayer
   end
 
   def get_action
-    puts "trying to get action!"
+    {:action => "fold"}
   end
 end

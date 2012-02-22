@@ -1,19 +1,19 @@
 class Player
   def get_action
-    $betting_sequence.delete_at(0).call
+    $betting_sequence.delete_at(0)
   end
 end
 $betting_sequence = []
 
 
 def bet(player,  amount)
-  $betting_sequence <<  lambda{ Factory.create(:action, :action_name => "bet", :amount => amount, :round => round, :player => player)}
+  $betting_sequence <<  {:action => "bet", :amount => amount}
 end
 
 def fold(player)
-  $betting_sequence <<  lambda{ Factory.create(:action, :action_name => "fold", :round => round, :player => player)}
+  $betting_sequence <<  {:action => "fold"}
 end
 
 def blind(player, amount)
-  $betting_sequence << lambda{ Factory.create(:action, :action_name => "blind", :amount => amount, :round => round, :player => player)}
+  $betting_sequence <<  {:action => "blind", :amount => amount}
 end

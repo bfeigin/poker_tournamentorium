@@ -37,8 +37,15 @@ class Round < ActiveRecord::Base
       puts "Action to #{player.inspect} with current bet #{bet}"
       puts 
 
-      action = player.get_action
+      action_hash = player.get_action
       next_player! # Rotate first, to ensure progress.
+
+      # TODO: validate action
+      if true
+        action = Action.create(:player => player, :round => self, :action_name => action_hash[:action], :amount => action_hash[:amount])
+      else
+        action = Action.create(:player => player, :round => self, :action_name => "fold")
+      end
 
       if action.is_fold?         
         puts "Fold."
