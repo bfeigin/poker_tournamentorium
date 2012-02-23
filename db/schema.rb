@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(:version => 9) do
   create_table "players", :force => true do |t|
     t.integer "tournament_id"
     t.string  "hostname"
-    t.integer "chips"
+    t.integer "chips", :null => false, :default => 0
     t.string  "name"
   end
 
