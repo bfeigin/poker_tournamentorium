@@ -1,47 +1,47 @@
-Admin.controllers :tables do
+Admin.controllers :game_tables do
 
   get :index do
-    @tables = Game.all
-    render 'tables/index'
+    @game_tables = GameTable.all
+    render 'game_tables/index'
   end
 
   get :new do
-    @table = Game.new
-    render 'tables/new'
+    @table = GameTable.new
+    render 'game_tables/new'
   end
 
   post :create do
-    @table = Game.new(params[:table])
+    @table = GameTable.new(params[:table])
     if @table.save
-      flash[:notice] = 'Game was successfully created.'
-      redirect url(:tables, :edit, :id => @table.id)
+      flash[:notice] = 'GameTable was successfully created.'
+      redirect url(:game_tables, :edit, :id => @table.id)
     else
-      render 'tables/new'
+      render 'game_tables/new'
     end
   end
 
   get :edit, :with => :id do
-    @table = Game.find(params[:id])
-    render 'tables/edit'
+    @table = GameTable.find(params[:id])
+    render 'game_tables/edit'
   end
 
   put :update, :with => :id do
-    @table = Game.find(params[:id])
+    @table = GameTable.find(params[:id])
     if @table.update_attributes(params[:table])
-      flash[:notice] = 'Game was successfully updated.'
-      redirect url(:tables, :edit, :id => @table.id)
+      flash[:notice] = 'GameTable was successfully updated.'
+      redirect url(:game_tables, :edit, :id => @table.id)
     else
-      render 'tables/edit'
+      render 'game_tables/edit'
     end
   end
 
   delete :destroy, :with => :id do
-    table = Game.find(params[:id])
+    table = GameTable.find(params[:id])
     if table.destroy
-      flash[:notice] = 'Game was successfully destroyed.'
+      flash[:notice] = 'GameTable was successfully destroyed.'
     else
-      flash[:error] = 'Unable to destroy Game!'
+      flash[:error] = 'Unable to destroy GameTable!'
     end
-    redirect url(:tables, :index)
+    redirect url(:game_tables, :index)
   end
 end

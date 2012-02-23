@@ -13,5 +13,9 @@
       %h3.title Actions
       %div
         =button_to "Seat Available Players", url(:tournaments, :seat, :id => @tournament.id), :method => :post, :class => :button_to
+    .inner
+      %h3.title Players
+      - @tournament.players.each do |player|
+        %div #{player.name}
 
 -content_for :sidebar, partial("base/sidebar")
