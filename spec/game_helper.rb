@@ -1,19 +1,15 @@
-class Player
-  def get_action(args)
-    $betting_sequence.delete_at(0)
-  end
+def start_round
+  $betting_sequence = sequence('round')
 end
-$betting_sequence = []
-
 
 def bet(player,  amount)
-  $betting_sequence <<  {:action => "bet", :amount => amount}
+  player.expects(:get_action).in_sequence($betting_sequence).returns({:action => "bet", :amount => amount})
 end
 
 def fold(player)
-  $betting_sequence <<  {:action => "fold"}
+  player.expects(:get_action).in_sequence($betting_sequence).returns({:action => "fold"})
 end
 
 def blind(player, amount)
-  $betting_sequence <<  {:action => "blind", :amount => amount}
+  player.expects(:get_action).in_sequence($betting_sequence).returns({:action => "blind", :amount => amount})
 end

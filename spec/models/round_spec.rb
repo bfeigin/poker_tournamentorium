@@ -29,6 +29,7 @@ describe "Round Model" do
 
     it 'should blind correctly ' do
       round.betting_phase = 'pre_flop'
+      start_round()
       blind(p1,50)
       blind(p2,100)
       bet(p1,100)
@@ -40,6 +41,8 @@ describe "Round Model" do
 
     it 'should rotate around players until the bet equalizes' do
       round.betting_phase = 'flop'
+
+      start_round()
 
       # Player 1 bets 50
       bet(p1, 50)
@@ -59,6 +62,7 @@ describe "Round Model" do
     end
 
     it 'should remove a player from the hand once they fold' do
+      start_round()
       # Player 1 folds
       fold(p1)
 

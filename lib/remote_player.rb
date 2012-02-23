@@ -8,6 +8,10 @@ module RemotePlayer
     "#{self.hostname}/player/ready"
   end
 
+  def action_path
+    "#{self.hostname}/player/action"
+  end
+
 
   # Query if the player is ready to be seated or not.
   def ready?
@@ -25,7 +29,18 @@ module RemotePlayer
   end
 
   def get_action(data)
-    {:action => "fold"}
+    RestClient.post(action_path, data) do |response, request, result|
+      if response.code == 200
+        begin
+          JSON.parse(response).symbolize_keys
+        rescue => e
+          logger.info "Exception #{e} raised in parsing response."
+          {:action => "fold"}
+        end
+      else
+        {:action => "fold"}
+      end
+    end
   end
  
 end

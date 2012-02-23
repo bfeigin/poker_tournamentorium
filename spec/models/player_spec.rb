@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe "Player Model" do
+  before :all do
+    load 'models/player.rb'
+  end
+
   let(:player) { Player.new }
   it 'can be created' do
     player.should_not be_nil
@@ -45,6 +49,13 @@ describe "Player Model" do
       @player.seat(@table)
 
       @player.game_tables.current_table.should be_nil
+    end
+
+    it "should post to hostname/player/action to determine the player's action" do
+      FakeWeb.register_uri(:post, "testhost/player/action",
+            { :body => "{\"action\": \"bet\", \"amount\": 100}", :status => ["200", "Okay"] })
+
+      @player.get_action({}).should == {:action => "bet", :amount => 100}
     end
   end
 end
