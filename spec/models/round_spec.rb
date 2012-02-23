@@ -30,8 +30,8 @@ describe "Round Model" do
     it 'should blind correctly ' do
       round.betting_phase = 'pre_flop'
       start_round()
-      blind(p1,50)
-      blind(p2,100)
+      blind(p1,1)
+      blind(p2,2)
       bet(p1,100)
       bet(p2,200)
       bet(p1,200)
