@@ -65,6 +65,6 @@ Then /^the hand should have community and pocket cards$/ do
 end
 
 # This will end the scenario!
-Then /the round should be over/ do
+Then /the hand should be over/ do
   @hand.expects(:close_hand!).in_sequence(@seq)
 end

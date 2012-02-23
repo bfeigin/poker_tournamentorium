@@ -24,7 +24,7 @@ Feature: Betting rounds
     #Then the round should advance to river
     When Bob bets 10
     And Alice folds
-    Then the round should be over
+    #Then the hand should be over
     When the hand plays out
     Then the hand should have 5 community cards
     Then each player should have 2 pocket cards

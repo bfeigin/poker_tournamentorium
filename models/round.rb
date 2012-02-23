@@ -16,8 +16,8 @@ class Round < ActiveRecord::Base
 
   def play!
     puts "entering round #{inspect}"
-    puts "with players #{hand.players}"
     @active_players = hand.active_players
+    puts "with players #{@active_players}"
     @max_bet = @active_players.max_by{|player| player.chips}
 
     close! unless enough_players?
@@ -46,7 +46,7 @@ class Round < ActiveRecord::Base
 
       if action.is_fold?         
         puts "Fold."
-        @active_players.delete(player)
+        unseat_player!(player)
       else
         puts "Bet of #{action.amount}."
         accept_bet(action)
@@ -84,6 +84,10 @@ class Round < ActiveRecord::Base
         false
       end
     end
+  end
+
+  def unseat_player!(player)
+    @active_players.delete(player)
   end
 
   def accept_bet(action)
