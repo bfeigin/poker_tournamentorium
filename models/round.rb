@@ -6,6 +6,10 @@ class Round < ActiveRecord::Base
   attr_accessor :current_bet
   attr_accessor :active_players
 
+  def current_bet
+    @current_bet ||= 0
+  end
+
   def non_blinds_for_player(player)
      actions.where("action_name NOT in ('blind')").where(:player_id => player)
   end
@@ -22,14 +26,12 @@ class Round < ActiveRecord::Base
       call_blinds(hand.game_table.small_blind)
     end
 
-    @current_bet ||= 0
-
     puts
     while ( enough_players? && 
             (player = action_to) && 
             ((non_blinds_for_player(player).size == 0) ||
-            (bet = player.current_bet) != @current_bet)) do 
-      puts "Min bet: $#{@current_bet}"
+            (bet = player.current_bet) != current_bet)) do 
+      puts "Min bet: $#{current_bet}"
       puts "Action to #{player.inspect} with current bet #{bet}. Hand: #{player.cards.collect { |c| c.value_code.to_s + c.suit_code.to_s}}"
       puts 
 
@@ -53,23 +55,34 @@ class Round < ActiveRecord::Base
     close!
   end
 
-  def validate_action(action_hash, player)
+  def validate_action(action_hash, player, args={})
+    logger.info "Trying to validate #{action_hash.inspect}"
     return false unless action_hash.is_a? Hash
 
-    if action_name = action_hash[:action]
-      if action_name.to_s == "bet" || action_name.to_s == "blind"
-        if amount = action_hash[:amount]
-          # A bet is only valid if it meets the minimum bet.
-          amount.to_i >= current_bet && player.reload.chips >= amount.to_i
+    # Handle the blinds case first.
+    # The action MUST be blind, and the amount MUST be the current bet.
+    if args[:blind] then
+      return action_hash[:action] == "blind" &&
+             (amount = action_hash[:amount]) &&
+             amount.to_i == current_bet && 
+             player.reload.chips >= amount.to_i
+    else
+      # Either a bet or fold is allowed.
+      if action_name = action_hash[:action]
+        if action_name.to_s == "bet"
+          if amount = action_hash[:amount]
+            # A bet is only valid if it meets the minimum bet.
+            amount.to_i >= current_bet && player.reload.chips >= amount.to_i
+          end
+        elsif action_name.to_s == "fold"
+          true
+        else
+          false
         end
-      elsif action_name.to_s == "fold"
-        true
       else
+        # Missing a required parameter.
         false
       end
-    else
-      # Missing a required parameter.
-      false
     end
   end
 
@@ -115,7 +128,7 @@ class Round < ActiveRecord::Base
 
       action_hash = action_to.get_action(turn_data(:blind => true))
       
-      if validate_action(action_hash, action_to) && action_hash[:action].to_s == "blind"
+      if validate_action(action_hash, action_to, {:blind => true})
         action = Action.create(:player => action_to, :round => self, :action_name => action_hash[:action].to_s, :amount => action_hash[:amount].to_i)
         accept_bet(action)
       else
