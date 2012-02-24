@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(:version => 9) do
   create_table "game_tables", :force => true do |t|
     t.integer "tournament_id"
     t.integer "hands_played"
-    t.integer "dealer_position", :null => false, :default => 0
+    t.integer "dealer_id"
     t.string "game_type", :null => false, :default => 'texas_holdem'
   end
 

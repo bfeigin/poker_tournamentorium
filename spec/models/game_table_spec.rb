@@ -15,15 +15,32 @@ describe "GameTable Model" do
     game_table.full?.should be_false
   end
 
-  describe 'dealer position' do 
-    it 'defaults to seating 1' do
-      game_table.dealer_position.should == 0
-    end
+  it 'can unseat players' do
+    3.times do FactoryGirl.create(:seating, :game_table => game_table, :active => true) end
+    puts game_table.inspect
+    game_table.reload.unseat_player!(game_table.players.first)
 
-    context 'not enough active players' do
+    game_table.players.count.should == 2
+  end
+
+  describe 'dealer position' do 
+    let(:game_table) { FactoryGirl.create(:game_table)}
+
+    context 'one active player' do
+      before :all do
+        FactoryGirl.create(:seating, :game_table => game_table, :active => true).player
+        game_table.reload
+      end
+
+      it 'defaults to seating the first player' do
+        game_table.assign_dealer!
+        game_table.dealer.should == game_table.players.first
+      end
+
       it 'keeps the current dealer position ' do
-        game_table.assign_dealer_position!
-        game_table.dealer_position.should == 0
+        game_table.assign_dealer!
+        game_table.assign_dealer!
+        game_table.dealer.should == game_table.players.first
       end
     end
 
@@ -33,18 +50,19 @@ describe "GameTable Model" do
           FactoryGirl.create(:seating, :game_table => game_table, :active => true)
         end
       end
+
       it 'assigns dealer to the next available seat' do
-        (1..3).each do |x|
-          game_table.assign_dealer_position!
-          game_table.dealer_position.should == x
+        (0..2).each do |x|
+          game_table.assign_dealer!
+          game_table.dealer.should == game_table.players[x]
         end
       end
 
       it 'wraps around the table' do
         4.times do |x|
-          game_table.assign_dealer_position!
+          game_table.assign_dealer!
         end
-        game_table.dealer_position.should == 1
+        game_table.dealer.should == game_table.players.first
       end
     end
   end

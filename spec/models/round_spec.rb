@@ -62,6 +62,8 @@ describe "Round Model" do
     end
 
     it 'should remove a player from the hand once they fold' do
+      round.betting_phase = 'flop'
+
       start_round()
       # Player 1 folds
       fold(p1)
@@ -98,5 +100,14 @@ describe "Round Model" do
     it "should reject a garbled action" do
       @r.validate_action({:action => "basdfet", :aasdfmount => 5}, @p).should be_false
     end
+  end
+
+  it "should unseat players from the game table when unseating them" do
+    @r = Round.new
+    p = stub('player')
+    @r.active_players = [p]
+    @r.expects(:hand).returns(mock('hand', :game_table => (mock('game', :unseat_player! => nil))))
+
+    @r.unseat_player!(p)
   end
 end

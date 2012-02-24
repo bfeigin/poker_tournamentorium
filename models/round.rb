@@ -46,7 +46,7 @@ class Round < ActiveRecord::Base
 
       if action.is_fold?         
         puts "Fold."
-        unseat_player!(player)
+        fold_player!(player)
       else
         puts "Bet of #{action.amount}."
         accept_bet(action)
@@ -86,8 +86,13 @@ class Round < ActiveRecord::Base
     end
   end
 
-  def unseat_player!(player)
+  def fold_player!(player)
     @active_players.delete(player)
+  end
+
+  def unseat_player!(player)
+    fold_player!(player)
+    hand.game_table.unseat_player!(player)
   end
 
   def accept_bet(action)
