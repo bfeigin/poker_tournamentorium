@@ -2,6 +2,10 @@ class Card < ActiveRecord::Base
   belongs_to :dealable, :polymorphic => true
   belongs_to :hand, :foreign_key => 'hand_id'
 
+  def to_code
+    value_code.to_s + suit_code.to_s
+  end
+
   def face_value
     self.class.face_value(value_code)
   end

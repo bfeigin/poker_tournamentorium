@@ -64,6 +64,11 @@ Then /^the hand should have community and pocket cards$/ do
     @hand.cards.size.should == (@players.size * 2) + 5
 end
 
+Then /^the hand should have a winner$/ do
+    puts "and the winner is #{@hand.winner.name} with #{@hand.full_player_hand(@hand.winner)}"
+    Player.should == @hand.winner.class
+end
+
 # This will end the scenario!
 Then /the hand should be over/ do
   @hand.expects(:close_hand!).in_sequence(@seq)

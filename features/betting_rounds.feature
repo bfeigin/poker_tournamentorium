@@ -29,4 +29,5 @@ Feature: Betting rounds
     Then the hand should have 5 community cards
     Then each player should have 2 pocket cards
     Then the hand should have community and pocket cards
+    Then the hand should have a winner
 

@@ -1,5 +1,6 @@
 class Hand < ActiveRecord::Base
   belongs_to :game_table
+  include PokerCalculator
 
   has_many :cards 
   has_many :community_cards, :as => :dealable, :class_name => 'Card'
@@ -9,6 +10,8 @@ class Hand < ActiveRecord::Base
       where(:open => true).first
     end
   end
+
+  attr_accessor :winner
   
   def deck
     @deck ||= Deck.new
@@ -65,6 +68,12 @@ class Hand < ActiveRecord::Base
   end
 
   def close_hand!
+    end_of_round = active_players.inject({}){ |sum, player| sum.merge({full_player_hand(player) => player})}
+    @winner = end_of_round[end_of_round.keys.sort.last]
+  end
+
+  def full_player_hand(player)
+    PokerHand.new((player.cards.where(:hand_id => self) + community_cards).map{|card| card.to_code})
   end
 
   #If we have a currently open round, then get the betting phase after that
