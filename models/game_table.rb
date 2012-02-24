@@ -11,6 +11,12 @@ class GameTable < ActiveRecord::Base
 
   has_and_belongs_to_many :players, :join_table => :seatings, :conditions => {:seatings => {:active => true}}
 
+  def play!
+    while self.players.count > 1
+      begin_hand
+    end
+  end
+
   def begin_hand
     assign_dealer!
     return hands.find_or_create_by_active(true)

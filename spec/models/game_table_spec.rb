@@ -72,4 +72,21 @@ describe "GameTable Model" do
       game_table.begin_hand
     end
   end
+
+  describe 'playing a game' do
+    it 'plays hands until one player remains' do
+      seq = sequence('hands')
+      players = mock('association')
+      game_table.stubs(:players).returns(players)
+      players.expects(:count).in_sequence(seq).returns(3)
+      game_table.expects(:begin_hand).in_sequence(seq).returns(nil)
+      players.expects(:count).in_sequence(seq).returns(3)
+      game_table.expects(:begin_hand).in_sequence(seq).returns(nil)
+      players.expects(:count).in_sequence(seq).returns(2)
+      game_table.expects(:begin_hand).in_sequence(seq).returns(nil)
+      players.expects(:count).in_sequence(seq).returns(1)
+
+      game_table.play!
+    end
+  end
 end
