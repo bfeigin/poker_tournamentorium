@@ -88,7 +88,6 @@ class Round < ActiveRecord::Base
 
   def fold_player!(player)
     @active_players.delete(player)
-    hand.fold_player!(player)
   end
 
   def unseat_player!(player)

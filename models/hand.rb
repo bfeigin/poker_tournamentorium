@@ -90,12 +90,10 @@ class Hand < ActiveRecord::Base
   end
 
   def active_players
-    @active_players ||= players.all
+    players.all.select { |p| 
+      p.actions.where(:action_name => "fold", :round_id => self.rounds).count == 0
+    }
   end
 
-  # Remove the player from future betting rounds.
-  def fold_player!(player)
-    active_players.delete(player)
-  end
 
 end
