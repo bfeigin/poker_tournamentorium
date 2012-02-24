@@ -11,7 +11,7 @@ class Hand < ActiveRecord::Base
     end
   end
 
-  attr_accessor :winner
+  attr_accessor :winners
   
   def deck
     @deck ||= Deck.new
@@ -69,7 +69,22 @@ class Hand < ActiveRecord::Base
 
   def close_hand!
     end_of_round = active_players.inject({}){ |sum, player| sum.merge({full_player_hand(player) => player})}
-    @winner = end_of_round[end_of_round.keys.sort.last]
+    puts "Showdown!"
+    winning_hand = end_of_round.keys.sort.last
+    @winners = end_of_round.select { |hand, player| hand == winning_hand }.values
+    puts "Winners are: #{@winners.collect {|winner| winner.name}}"
+
+    # Allocate the pot over the winners.
+    pot = self.rounds.sum(:pot)
+    remaining_pot = pot
+    @winners.each do |winner|
+      chips = (winner == @winners.last) ? remaining_pot : (pot / @winners.size)
+      puts "#{winner.name} receives #{chips}"
+
+      winner.chips += chips
+      winner.save!
+      remaining_pot -= chips
+    end
   end
 
   def full_player_hand(player)

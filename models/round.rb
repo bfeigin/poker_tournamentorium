@@ -65,14 +65,14 @@ class Round < ActiveRecord::Base
       return action_hash[:action] == "blind" &&
              (amount = action_hash[:amount]) &&
              amount.to_i == current_bet && 
-             player.reload.chips >= amount.to_i
+             player.reload.chips >= amount.to_i            
     else
       # Either a bet or fold is allowed.
       if action_name = action_hash[:action]
         if action_name.to_s == "bet"
           if amount = action_hash[:amount]
             # A bet is only valid if it meets the minimum bet.
-            amount.to_i >= current_bet && player.reload.chips >= amount.to_i
+            amount.to_i >= (current_bet || 0) && player.reload.chips >= amount.to_i
           end
         elsif action_name.to_s == "fold"
           true
