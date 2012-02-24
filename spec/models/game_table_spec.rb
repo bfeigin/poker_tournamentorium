@@ -79,11 +79,11 @@ describe "GameTable Model" do
       players = mock('association')
       game_table.stubs(:players).returns(players)
       players.expects(:count).in_sequence(seq).returns(3)
-      game_table.expects(:begin_hand).in_sequence(seq).returns(nil)
+      game_table.expects(:begin_hand).in_sequence(seq).returns(mock('hand', :play! => nil))
       players.expects(:count).in_sequence(seq).returns(3)
-      game_table.expects(:begin_hand).in_sequence(seq).returns(nil)
+      game_table.expects(:begin_hand).in_sequence(seq).returns(mock('hand', :play! => nil))
       players.expects(:count).in_sequence(seq).returns(2)
-      game_table.expects(:begin_hand).in_sequence(seq).returns(nil)
+      game_table.expects(:begin_hand).in_sequence(seq).returns(mock('hand', :play! => nil))
       players.expects(:count).in_sequence(seq).returns(1)
 
       game_table.play!

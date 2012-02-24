@@ -141,8 +141,7 @@ class Round < ActiveRecord::Base
         action = Action.create(:player => action_to, :round => self, :action_name => action_hash[:action].to_s, :amount => action_hash[:amount].to_i)
         accept_bet(action)
       else
-        # TODO: unseat player 
-        raise "player did not post blinds"
+        unseat_player!(action_to)
       end
 
       next_player!
