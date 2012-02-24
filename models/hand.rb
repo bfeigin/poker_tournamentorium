@@ -99,7 +99,10 @@ class Hand < ActiveRecord::Base
   end
 
   def active_players
-    players.all.select { |p| 
+    active = players.all
+    active.rotate! while active.last != self.game_table.dealer && active.include?(self.game_table.dealer)
+    
+    active.select { |p| 
       p.actions.where(:action_name => "fold", :round_id => self.rounds).count == 0
     }
   end

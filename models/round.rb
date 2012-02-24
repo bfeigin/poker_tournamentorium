@@ -132,6 +132,8 @@ class Round < ActiveRecord::Base
 
   def call_blinds(small_blind)
     (1..2).each do |blind|
+      return unless enough_players?
+
       blind_amount = small_blind * blind
       @current_bet = blind_amount
 
@@ -149,7 +151,6 @@ class Round < ActiveRecord::Base
   end
 
   def action_to
-    puts "active Players #{@active_players.inspect}"
     @active_players.first
   end
 
