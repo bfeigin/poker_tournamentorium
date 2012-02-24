@@ -90,7 +90,12 @@ class Hand < ActiveRecord::Base
   end
 
   def active_players
-    players.all
+    @active_players ||= players.all
+  end
+
+  # Remove the player from future betting rounds.
+  def fold_player!(player)
+    active_players.delete(player)
   end
 
 end
