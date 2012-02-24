@@ -102,11 +102,10 @@ describe "Round Model" do
     end
   end
 
-  it "should fold players from itself and the hand when folding them" do
+  it "should fold players from itself" do
     @r = Round.new
     p = stub('player')
     @r.active_players = [p]
-    @r.expects(:hand).returns(mock('hand', :fold_player! => nil))
 
     @r.fold_player!(p)
     @r.active_players.should == []
