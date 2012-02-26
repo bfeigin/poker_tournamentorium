@@ -10,7 +10,20 @@ EnovaPoker.controllers :tournament do
       body "Welcome to the party!"
     else
       status 404
-      body "No active tournaments"
+      body "No active tournaments."
+    end
+  end
+
+
+  get :show do
+    @tournament = Tournament.find(:last)
+    if @tournament
+      @game_tables = @tournament.game_tables.sort("id desc")
+
+      render "tournament/show"
+    else
+      status 404
+      body "No active tournaments."
     end
   end
 end
