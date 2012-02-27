@@ -1,3 +1,5 @@
 %h1 Tournament
 %h2 Tables
+- @tournament.game_tables.each do |game_table|
+  %p= link_to "Table #{game_table.id}", url_for(:game_table, :show, game_table.id)
 

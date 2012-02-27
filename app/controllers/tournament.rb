@@ -18,7 +18,7 @@ EnovaPoker.controllers :tournament do
   get :show do
     @tournament = Tournament.find(:last)
     if @tournament
-      @game_tables = @tournament.game_tables.sort("id desc")
+      @game_tables = @tournament.game_tables.order("id desc")
 
       render "tournament/show"
     else

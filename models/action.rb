@@ -6,4 +6,7 @@ class Action < ActiveRecord::Base
     return action_name == 'fold'
   end
 
+  def is_blind?
+    return action_name == 'blind'
+  end
 end

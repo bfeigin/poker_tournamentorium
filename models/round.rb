@@ -128,8 +128,25 @@ class Round < ActiveRecord::Base
       :blind            => !!args[:blind],
       :your_chips       => action_to.chips,
       :your_hand        => action_to.cards_hash(self.hand),
-      :community_cards  => hand.community_cards.as_json.to_param_hash
+      :community_cards  => hand.community_cards.as_json.to_param_hash,
+      :game_table_identifier => "table_#{hand.game_table.id}",
+      :hand_identifier  => "hand_#{hand.id}",
+      :betting_phase    => self.betting_phase,
+      :active_players   => players_data
     }
+  end
+
+  # Generate a hash of each player and their status.
+  def players_data    
+    active_players.collect do |player|
+      player.reload
+
+      {
+        :name => player.name,
+        :chips => player.chips,
+        :actions_this_round => player.actions.where(:round_id => self.id).collect { |a| {:action => a.action_name, :amount => a.amount} }.to_param_hash
+      }
+    end.to_param_hash
   end
 
   def call_blinds(small_blind)
