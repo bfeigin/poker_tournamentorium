@@ -127,7 +127,7 @@ class Round < ActiveRecord::Base
       :minimum_bet      => current_bet,
       :blind            => !!args[:blind],
       :your_chips       => action_to.chips,
-      :your_hand        => action_to.cards.as_json,
+      :your_hand        => action_to.cards_hash,
       :community_cards  => hand.community_cards.as_json 
     }
   end

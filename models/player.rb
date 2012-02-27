@@ -33,6 +33,10 @@ class Player < ActiveRecord::Base
   def notify(data={})
   end
 
+  # Get our current hand.
+  def cards_hash
+    self.cards.to_a.collect { |c| c.as_json }
+  end
 
   private
   
