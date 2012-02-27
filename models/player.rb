@@ -34,8 +34,8 @@ class Player < ActiveRecord::Base
   end
 
   # Get our current hand.
-  def cards_hash
-    self.cards.to_a.collect { |c| c.as_json }
+  def cards_hash(hand)
+    self.cards.where(:hand_id => hand).collect { |c| c.as_json }.to_param_hash
   end
 
   private

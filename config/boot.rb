@@ -18,6 +18,9 @@ Bundler.require(:default, PADRINO_ENV)
 # Add your before load hooks here
 #
 Padrino.before_load do
+  if ENV['LOG_AR'] 
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
+  end
 end
 
 ##

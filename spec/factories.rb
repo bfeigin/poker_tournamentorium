@@ -39,6 +39,14 @@ FactoryGirl.define do
     active true
   end
 
+  factory :card do
+    hand
+    suit_code "H"
+    value_code "T"
+    dealable_id Factory.create(:player).id
+    dealable_type "Player"
+  end
+
   factory :round do
     betting_phase 'flop'
     hand

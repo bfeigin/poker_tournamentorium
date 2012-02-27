@@ -19,6 +19,25 @@ describe "Player Model" do
     player.game_tables.current_table.should == table
   end
 
+  describe 'cards' do
+    it "should have cards" do
+      player = Factory.create :player
+      c = Factory.create(:card, :dealable_id => player)
+
+      player.reload.cards.should include(c)
+    end
+
+    it "should get a card hash for a particular hand to send to the player" do
+      p = Factory.create :player
+      h = Factory.create(:hand)
+      c1 = Factory.create(:card, :dealable_id => p.id, :hand => h, :value_code => "1")
+      c2 = Factory.create(:card, :dealable_id => p.id, :value_code => "2")
+
+      p.reload.cards.should =~ [c1, c2]
+      p.cards_hash(h).should == [ c1.as_json ].to_param_hash
+    end
+  end
+
   describe "remote actions" do
     before :each do
       @player = Factory.create(:player)
