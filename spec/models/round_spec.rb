@@ -105,6 +105,7 @@ describe "Round Model" do
   it "should fold players from itself" do
     @r = Round.new
     p = stub('player')
+    p.expects(:notify).returns nil
     @r.active_players = [p]
 
     @r.fold_player!(p)
@@ -114,6 +115,7 @@ describe "Round Model" do
   it "should fold players and unseat from the game table when unseating them" do
     @r = Round.new
     p = stub('player')
+    p.expects(:notify).at_least_once.returns nil
     @r.active_players = [p]
     
     @r.expects(:hand).returns(mock('hand', :game_table => (mock('game', :unseat_player! => nil))))

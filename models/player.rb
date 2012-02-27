@@ -29,6 +29,11 @@ class Player < ActiveRecord::Base
     end
   end
 
+  # Not implemented for anything but remote players.
+  def notify(data={})
+  end
+
+
   private
   
   def sit_at(table)

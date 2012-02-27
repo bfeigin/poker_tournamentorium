@@ -88,11 +88,13 @@ class Round < ActiveRecord::Base
 
   def fold_player!(player)
     @active_players.delete(player)
+    player.notify(:event => "folded")
   end
 
   def unseat_player!(player)
     fold_player!(player)
     hand.game_table.unseat_player!(player)
+    player.notify(:event => "unseated")
   end
 
   def accept_bet(action)
