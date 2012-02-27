@@ -44,26 +44,28 @@ class Hand < ActiveRecord::Base
     end
   end
 
-  def add_community_card
+  def add_community_card(label=nil)
     puts "adding community card"
-    puts deal_card(self)
+    deal_card(self, label)
   end
 
-  def deal_card(dealable)
-    Card.create(deck.card!.merge(:dealable => dealable, :hand_id => id))
+  def deal_card(dealable, label=nil)
+    Card.create(deck.card!.merge(:dealable => dealable, :hand_id => id, :label => label))
   end
 
   def deal_community_cards
     deck.burn!
     case rounds.last.betting_phase
     when 'pre_flop'
-      3.times do
-        add_community_card
+      3.times do # The flop.
+        add_community_card("flop")
       end
     when 'river'
       return
-    else
-      add_community_card
+    when 'flop' # After flop, play turn card.
+      add_community_card("turn")
+    when 'turn' # After turn, play river card.
+      add_community_card("river")
     end
   end
 

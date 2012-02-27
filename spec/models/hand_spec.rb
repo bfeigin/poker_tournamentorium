@@ -17,6 +17,11 @@ describe "Hand Model" do
   it 'should never allow a nil betting phase' do
     hand.betting_phases.index(nil).should be_nil
   end
+
+  it 'should deal cards with a label' do
+    hand = FactoryGirl.create :hand
+    hand.add_community_card("test").label.should == "test"
+  end
   
 
   context 'betting rounds' do
