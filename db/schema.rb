@@ -61,6 +61,7 @@ ActiveRecord::Schema.define(:version => 9) do
   create_table "cards", :force => true do |t|
     t.string :value_code, :null => false
     t.string :suit_code, :null => false
+    t.string :label
     t.references :dealable, :polymorphic => true, :null => false
     t.integer :hand_id, :null => false
   end
