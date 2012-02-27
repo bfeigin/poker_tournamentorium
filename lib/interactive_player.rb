@@ -26,4 +26,6 @@ module InteractivePlayer
     end
   end
 
+  def notify(data)
+  end
 end

@@ -29,9 +29,6 @@ class Player < ActiveRecord::Base
     end
   end
 
-  # Not implemented for anything but remote players.
-  def notify(data={})
-  end
 
   # Get our current hand.
   def cards_hash(hand)

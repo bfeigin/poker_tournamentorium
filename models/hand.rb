@@ -83,6 +83,7 @@ class Hand < ActiveRecord::Base
 
       winner.chips += chips
       winner.save!
+      winner.notify(:event => "won_chips", :amount => chips)
       remaining_pot -= chips
     end
   end
