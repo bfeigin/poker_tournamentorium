@@ -84,12 +84,13 @@ class Hand < ActiveRecord::Base
       winner.chips += chips
       winner.save!
       winner.notify(:event => "won_chips", :amount => chips)
+      Action.create(:player_id => winner.id, :round_id => self.rounds.last.id, :action_name => "won", :amount => chips)
       remaining_pot -= chips
     end
   end
 
   def full_player_hand(player)
-    PokerHand.new((player.cards.where(:hand_id => self) + community_cards).map{|card| card.to_code})
+    PokerHand.new((player.cards.where(:hand_id => self.id) + community_cards).map{|card| card.to_code})
   end
 
   #If we have a currently open round, then get the betting phase after that

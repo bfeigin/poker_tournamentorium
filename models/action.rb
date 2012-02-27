@@ -9,4 +9,8 @@ class Action < ActiveRecord::Base
   def is_blind?
     return action_name == 'blind'
   end
+
+  def is_win?
+    return action_name == 'won'
+  end
 end

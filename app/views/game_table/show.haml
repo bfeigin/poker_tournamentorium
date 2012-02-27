@@ -8,5 +8,7 @@
         %p #{action.player.name} folded.
       - elsif action.is_blind?
         %p #{action.player.name} posted blinds of #{action.amount}
+      - elsif action.is_win?
+        %p #{action.player.name} won #{action.amount}!
       - else
         %p #{action.player.name} bet #{action.amount}
