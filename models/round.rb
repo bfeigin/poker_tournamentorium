@@ -18,7 +18,7 @@ class Round < ActiveRecord::Base
     puts "entering round #{inspect}"
     @active_players = hand.active_players
     puts "with players #{@active_players}"
-    @max_bet = @active_players.max_by{|player| player.chips}
+    @max_bet = @active_players.max_by{|player| player.chips}.chips || 1
 
     close! unless enough_players?
 
@@ -65,6 +65,7 @@ class Round < ActiveRecord::Base
       return action_hash[:action] == "blind" &&
              (amount = action_hash[:amount]) &&
              amount.to_i == current_bet && 
+             amount.to_i <= max_bet &&
              player.reload.chips >= amount.to_i            
     else
       # Either a bet or fold is allowed.
@@ -125,6 +126,7 @@ class Round < ActiveRecord::Base
 
     {
       :minimum_bet      => current_bet,
+      :maximum_bet      => args[:blind] ? current_bet : max_bet,
       :blind            => !!args[:blind],
       :your_chips       => action_to.chips,
       :your_hand        => action_to.cards_hash(self.hand),
