@@ -51,6 +51,12 @@ ActiveRecord::Schema.define(:version => 9) do
   end 
   #add_index "rounds", ['hand_id', 'open'], :where  => "open = 't'", :name => 'open_round_in_hand', :unique => true
 
+  create_table "hand_start_stats", :force => true do |t|
+    t.integer 'hand_id'
+    t.integer 'player_id'
+    t.integer 'chips'
+  end
+
   create_table "actions", :force => true do |t|
     t.integer "round_id"
     t.integer "player_id"
