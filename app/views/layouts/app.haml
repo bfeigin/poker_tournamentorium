@@ -1,0 +1,19 @@
+!!! 5
+%html
+  %head
+    = stylesheet_link_tag 'bootstrap'
+    = stylesheet_link_tag 'app'
+    %script{:src => "http://use.typekit.com/fhb0qqm.js", :type => "text/javascript"}
+    :javascript
+      try{Typekit.load();}catch(e){}  
+  %body
+    #head
+      #logo
+        %a{:href => "#"} Poker Tournament
+    #wrap
+      #clear
+      #container
+        = yield
+
+    = javascript_include_tag 'app'
+    = javascript_include_tag 'bootstrap'

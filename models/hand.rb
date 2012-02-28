@@ -20,19 +20,12 @@ class Hand < ActiveRecord::Base
 
   def play!
     save 
-    record_stats
     deal_pocket_cards
     while next_round do
       rounds.currently_open.play!
       deal_community_cards
     end
     close_hand!
-  end
-
-  def record_stats
-    self.players.each do |player|
-      HandStartStat.create(:hand_id => self.id, :player_id => player.id, :chips => player.reload.chips)
-    end
   end
 
   def next_round

@@ -1,4 +1,5 @@
 EnovaPoker.controllers :tournament do
+  layout :app
   # Player wants to register for a tournament
   # Posts: name:string, hostname:uri
   # Response: 200 - player is registered

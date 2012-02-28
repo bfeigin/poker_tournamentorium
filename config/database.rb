@@ -13,40 +13,22 @@
 #     :socket    => '/tmp/mysql.sock'
 #   }
 #
-
 ActiveRecord::Base.configurations[:development] = {
-  :adapter   => 'mysql2',
-  :encoding  => 'utf8',
-  :reconnect => true,
-  :database  => 'enova_poker_development',
-  :pool      => 5,
-  :username  => 'root',
-  :password  => 'root',
-  :host      => 'localhost',
-  :socket    => '/tmp/mysql.sock'
-}
-ActiveRecord::Base.configurations[:test] = {
-  :adapter   => 'mysql2',
-  :encoding  => 'utf8',
-  :reconnect => true,
-  :database  => 'enova_poker_test',
-  :pool      => 5,
-  :username  => 'root',
-  :password  => 'root',
-  :host      => 'localhost',
-  :socket    => '/tmp/mysql.sock'
+  :adapter => 'sqlite3',
+  :database => Padrino.root('db', "enova_poker_development.db")
+
 }
 
 ActiveRecord::Base.configurations[:production] = {
-  :adapter   => 'mysql2',
-  :encoding  => 'utf8',
-  :reconnect => true,
-  :database  => 'enova_poker_production',
-  :pool      => 5,
-  :username  => 'root',
-  :password  => 'root',
-  :host      => 'localhost',
-  :socket    => '/tmp/mysql.sock'
+  :adapter => 'sqlite3',
+  :database => Padrino.root('db', "enova_poker_production.db")
+
+}
+
+ActiveRecord::Base.configurations[:test] = {
+  :adapter => 'sqlite3',
+  :database => Padrino.root('db', "enova_poker_development.db")
+
 }
 
 # Setup our logger

@@ -1,28 +1,36 @@
-%h1 Table #{@game_table.id}
-- @game_table.hands.order(:id).each_with_index do |hand, i|
-  %h2 Hand ##{i+1}
-  - hand.players.each do |player|
-    %p #{player.name} has #{HandStartStat.where(:player_id => player.id, :hand_id => hand.id).first.chips} chips
-  - hand.rounds.each do |round|
-    %h3=round.betting_phase.titleize
-    - if round.betting_phase.to_s != "pre_flop"
-      %p 
-        Cards dealt:
-        = hand.cards.where(:label => round.betting_phase.to_s).collect { |c| c.value_code.to_s + c.suit_code.to_s }.join(", ")
-    - round.actions.order(:id).each do |action|
-      %p 
-        = action.player.name
-        (
-        = action.player.cards.where(:hand_id => hand.id).collect { |c| c.value_code.to_s + c.suit_code.to_s }.join(", ")
-        )
-        - if action.is_fold?
-          folded.
-        - elsif action.is_blind?
-          posted blinds of #{action.amount}.
-        - elsif action.is_win?
-          won #{action.amount}!
-        - else
-          - if action.amount == 0
-            checked.
-          - else
-            bet #{action.amount}.
+#header
+  %h1 Table #{@game_table.id}
+#content
+  .tabbable.tabs-left
+    %ul.nav.nav-tabs
+      - @game_table.hands.order(:id).each_with_index do |hand, i|
+        %li
+          %a{:"data-toggle" => "tab", :href => "#l#{i+1}"} Hand #{i+1}
+    .tab-content
+      - @game_table.hands.order(:id).each_with_index do |hand, i|
+        .tab-pane{:id => "l#{i+1}"}
+          %h2 Hand ##{i+1}
+          - hand.rounds.each do |round|
+            %h3=round.betting_phase.titleize
+            - if round.betting_phase.to_s != "pre_flop"
+              %pre Cards dealt  #{hand.cards.where(:label => round.betting_phase.to_s).collect { |c| c.value_code.to_s + suit_symbol(c.suit_code.to_s) }.join(" ")}
+            %table.table.table-striped.table-bordered.table-condensed
+              %tbody
+              - round.actions.order(:id).each do |action|
+                %tr
+                  %td
+                    %span.name= action.player.name.chomp
+                  %td
+                    = action.player.cards.where(:hand_id => hand.id).collect { |c| c.value_code.to_s + suit_symbol(c.suit_code.to_s) }.join("  ")
+                  %td
+                    - if action.is_fold?
+                      folded.
+                    - elsif action.is_blind?
+                      posted blinds of #{action.amount}.
+                    - elsif action.is_win?
+                      won #{action.amount}!
+                    - else
+                      - if action.amount == 0
+                        checked.
+                      - else
+                        bet #{action.amount}.

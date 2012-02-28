@@ -6,6 +6,12 @@ class Card < ActiveRecord::Base
     value_code.to_s + suit_code.to_s
   end
 
+  def to_html
+    if suit_code.to_s == "C"
+      return "&clubs;"
+    end
+  end
+
   def face_value
     self.class.face_value(value_code)
   end

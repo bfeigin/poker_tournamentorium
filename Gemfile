@@ -13,7 +13,6 @@ gem 'bcrypt-ruby', :require => "bcrypt"
 gem 'haml'
 gem 'activerecord', :require => "active_record"
 gem 'sqlite3'
-gem 'mysql2'
 gem 'rest-client'
 
 # Test requirements
