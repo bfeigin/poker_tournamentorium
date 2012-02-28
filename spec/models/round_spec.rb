@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'game_helper'
 
 describe "Round Model" do
-  let(:round) { Round.new }
+  let(:round) { Factory.create :round }
   it 'can be created' do
     round.should_not be_nil
   end
@@ -25,6 +25,7 @@ describe "Round Model" do
     before :each do
       @turn_sequence = sequence('hand')
       round.hand.stubs(:active_players).returns(players)
+      round.hand.stubs(:players).returns(players.dup)
     end
 
     it 'should blind correctly ' do
@@ -58,7 +59,7 @@ describe "Round Model" do
       round.play!
 
       players.should =~ [p1, p2]
-      p1.reload.chips.should == 850
+      p1.reload.chips.should == 900
     end
 
     it 'should remove a player from the hand once they fold' do

@@ -22,7 +22,7 @@ describe "Player Model" do
   describe 'cards' do
     it "should have cards" do
       player = Factory.create :player
-      c = Factory.create(:card, :dealable_id => player)
+      c = Factory.create(:card, :dealable_id => player.id)
 
       player.reload.cards.should include(c)
     end

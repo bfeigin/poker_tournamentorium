@@ -100,12 +100,6 @@ class Round < ActiveRecord::Base
 
   def accept_bet(action)
     @current_bet = action.amount
-
-    # Move money into the pot from the player's chips.
-    self.pot += action.amount
-    action.player.chips -= action.amount
-    action.player.save!
-    true
   end
 
   def actions_taken
@@ -176,6 +170,19 @@ class Round < ActiveRecord::Base
   end
 
   def close!
+    # Move money into the pot from the player's chips, for each player.
+    self.hand.players.each do |player|
+      player.reload
+
+      # Find the player's latest bet or blind in this round.
+      last_bet = player.actions.where(:round_id => self.id).where(:action_name => ['blind', 'bet']).order("id desc").first
+      if last_bet
+        self.pot += last_bet.amount
+        player.chips -= last_bet.amount
+        player.save!
+      end
+    end
+
     self[:open] = false
     save
   end
