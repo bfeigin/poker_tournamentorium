@@ -1,6 +1,8 @@
 %h1 Table #{@game_table.id}
 - @game_table.hands.order(:id).each_with_index do |hand, i|
   %h2 Hand ##{i+1}
+  - hand.players.each do |player|
+    %p #{player.name} has #{HandStartStat.where(:player_id => player.id, :hand_id => hand.id).first.chips} chips
   - hand.rounds.each do |round|
     %h3=round.betting_phase.titleize
     - if round.betting_phase.to_s != "pre_flop"
