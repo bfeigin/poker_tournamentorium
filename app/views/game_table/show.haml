@@ -8,14 +8,19 @@
         Cards dealt:
         = hand.cards.where(:label => round.betting_phase.to_s).collect { |c| c.value_code.to_s + c.suit_code.to_s }.join(", ")
     - round.actions.order(:id).each do |action|
-      - if action.is_fold?
-        %p #{action.player.name} folded.
-      - elsif action.is_blind?
-        %p #{action.player.name} posted blinds of #{action.amount}.
-      - elsif action.is_win?
-        %p #{action.player.name} won #{action.amount}!
-      - else
-        - if action.amount == 0
-          %p #{action.player.name} checked.
+      %p 
+        = action.player.name
+        (
+        = action.player.cards.where(:hand_id => hand.id).collect { |c| c.value_code.to_s + c.suit_code.to_s }.join(", ")
+        )
+        - if action.is_fold?
+          folded.
+        - elsif action.is_blind?
+          posted blinds of #{action.amount}.
+        - elsif action.is_win?
+          won #{action.amount}!
         - else
-          %p #{action.player.name} bet #{action.amount}.
+          - if action.amount == 0
+            checked.
+          - else
+            bet #{action.amount}.
