@@ -5,7 +5,7 @@ EnovaPoker.controllers :tournament do
   # Response: 404 - No tournaments active
   post :register do
     tournament = Tournament.find(:last)
-    if tournament && Player.new(:name => params[:name], :hostname => params[:hostname], :tournament => tournament).save
+    if tournament && tournament.open? && Player.new(:name => params[:name], :hostname => params[:hostname], :tournament => tournament).save
       status 200
       body "Welcome to the party!"
     else

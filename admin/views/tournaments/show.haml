@@ -13,6 +13,16 @@
       %h3.title Actions
       %div
         =button_to "Seat Available Players", url(:tournaments, :seat, :id => @tournament.id), :method => :post, :class => :button_to
+      %div
+        =button_to "Close Registration", url(:tournaments, :close, :id => @tournament.id), :method => :post, :class => :button_to
+    .inner
+      %h3.title Create Table
+      %div
+        =button_to "Create a new table", url(:game_tables, :create, :tournament_id => @tournament.id), :method => :post, :class => :button_to
+    .inner
+      %h3.title Table for this Tournament
+      - @tournament.game_tables.each do |game_table|
+        %div #{game_table.id}
     .inner
       %h3.title Players
       - @tournament.players.each do |player|
