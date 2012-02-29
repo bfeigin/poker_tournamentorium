@@ -11,28 +11,25 @@
         .tab-pane{:id => "l#{i+1}"}
           %h2 Hand ##{i+1}
           - hand.rounds.each do |round|
-            %h3=round.betting_phase.titleize
-            - if round.betting_phase.to_s != "pre_flop"
-              %pre Cards dealt  #{hand.cards.where(:label => round.betting_phase.to_s).collect { |c| c.value_code.to_s + suit_symbol(c.suit_code.to_s) }.join(" ")}
-            %table.table.table-striped.table-bordered.table-condensed
-              %tbody
+            .well
+              %h3
+                = round.betting_phase.titleize
+                - if round.betting_phase.to_s != "pre_flop"
+                  %span.dealt #{hand.cards.where(:label => round.betting_phase.to_s).collect { |c| build_card(c.value_code.to_s, c.suit_code.to_s) }.join(" ")}
               - round.actions.order(:id).each do |action|
-                %tr
-                  %td
-                    %span.name= action.player.name.chomp
-                  %td
-                    = action.player.cards.where(:hand_id => hand.id).collect { |c| c.value_code.to_s + suit_symbol(c.suit_code.to_s) }.join("  ")
-                  %td
-                    - if action.is_fold?
-                      folded.
-                    - elsif action.is_blind?
-                      posted blinds of #{action.amount}.
-                    - elsif action.is_win?
-                      won #{action.amount}!
-                    - elsif action.is_unseat?
-                      was unseated from the table.
+                .play
+                  %span.name.label= action.player.name.chomp
+                  = action.player.cards.where(:hand_id => hand.id).collect { |c| build_card(c.value_code.to_s, c.suit_code.to_s) }.join("")
+                  - if action.is_fold?
+                    folded.
+                  - elsif action.is_blind?
+                    posted blinds of #{action.amount}.
+                  - elsif action.is_win?
+                    won #{action.amount}!
+                  - elsif action.is_unseat?
+                    was unseated from the table.
+                  - else
+                    - if action.amount == 0
+                      checked.
                     - else
-                      - if action.amount == 0
-                        checked.
-                      - else
-                        bet #{action.amount}.
+                      bet #{action.amount}.

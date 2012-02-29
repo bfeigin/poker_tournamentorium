@@ -4,17 +4,20 @@ EnovaPoker.helpers do
   # def simple_helper_method
   #  ...
   # end
-  def suit_symbol(suit_code)
+  def build_card(number, suit_code)
+    card = "<div class='card'>"
+    card << number
     case suit_code
       when "C" 
-        "<div class='card black'>&clubs;</div>"
+        card << "<div class='suit black'>&clubs;</div>"
       when "S" 
-        "<div class='card black'>&spades;</div>"
+        card << "<div class='suit black'>&spades;</div>"
       when "D" 
-        "<div class='card red'>&diams;</div>"
+        card << "<div class='suit red'>&diams;</div>"
       when "H" 
-        "<div class='card red'>&hearts;</div>"
-      else ""
+        card << "<div class='suit red'>&hearts;</div>"
     end
+    card << "</div>"
+    card
   end
 end 
