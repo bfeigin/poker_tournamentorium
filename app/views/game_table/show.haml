@@ -29,6 +29,8 @@
                       posted blinds of #{action.amount}.
                     - elsif action.is_win?
                       won #{action.amount}!
+                    - elsif action.is_unseat?
+                      was unseated from the table.
                     - else
                       - if action.amount == 0
                         checked.

@@ -13,4 +13,12 @@ class Action < ActiveRecord::Base
   def is_win?
     return action_name == 'won'
   end
+
+  def is_unseat?
+    return action_name == 'was_unseated'
+  end
+
+  def is_bet?
+    return action_name == 'bet'
+  end
 end

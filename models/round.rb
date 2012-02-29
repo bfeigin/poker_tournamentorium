@@ -96,6 +96,7 @@ class Round < ActiveRecord::Base
 
   def unseat_player!(player)
     fold_player!(player)
+    Action.create(:action_name => "was_unseated", :player_id => player.id, :round_id => self.id)
     hand.game_table.unseat_player!(player)
     player.notify(:event => "unseated")
   end
@@ -151,6 +152,8 @@ class Round < ActiveRecord::Base
     (1..2).each do |blind|
       return unless enough_players?
 
+      logger.info "Trying to call blinds for player #{action_to}..."
+
       blind_amount = small_blind * blind
       @current_bet = blind_amount
 
@@ -159,11 +162,11 @@ class Round < ActiveRecord::Base
       if validate_action(action_hash, action_to, {:blind => true})
         action = Action.create(:player => action_to, :round => self, :action_name => action_hash[:action].to_s, :amount => action_hash[:amount].to_i)
         accept_bet(action)
+
+        next_player!
       else
         unseat_player!(action_to)
       end
-
-      next_player!
     end
   end
 
