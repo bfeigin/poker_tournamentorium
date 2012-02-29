@@ -21,16 +21,16 @@ class Tournament < ActiveRecord::Base
     #  p.seat(current_table)
 
     #number_of_players_per_table = (ready_players.size.to_f / game_tables.size).ceil
-    estimated_players = ready_players.group_by { |p| p.id % game_tables.size }
+    opened_game_tables = game_tables.select {|game_table| game_table.open? }
+   
+    estimated_players = ready_players.group_by { |p| p.id % opened_game_tables.size }
 
-    puts estimated_players.inspect
 
     initial_count = 0
-    game_tables.each do |gt|
+    
+    opened_game_tables.each do |gt|
       gt.players = estimated_players[initial_count]
-      puts "estimated_players[initial_count]: #{estimated_players[initial_count]}"
       initial_count = initial_count + 1
-      puts "initial_count: #{initial_count}"
       gt.save
     end
   end
