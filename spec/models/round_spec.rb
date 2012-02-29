@@ -115,7 +115,8 @@ describe "Round Model" do
 
   it "should fold players and unseat from the game table when unseating them" do
     @r = Round.new
-    p = stub('player')
+    p = stub('player', :id => nil)
+    Action.expects(:create).returns nil
     p.expects(:notify).at_least_once.returns nil
     @r.active_players = [p]
     
