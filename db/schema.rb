@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 9) do
     t.integer "tournament_id"
     t.integer "hands_played"
     t.integer "dealer_id"
+    t.string  "status",:null => false, :default => 'open'
     t.string "game_type", :null => false, :default => 'texas_holdem'
   end
 

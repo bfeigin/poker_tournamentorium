@@ -23,6 +23,10 @@
       %h3.title Table for this Tournament
       - @tournament.game_tables.each do |game_table|
         %div #{game_table.id}
+        - if game_table.open?
+          =button_to "Close the table", url(:game_tables, :close, :id => game_table.id), :method => :post, :class => :button_to
+        - else
+          %p Table closed
     .inner
       %h3.title Players
       - @tournament.players.each do |player|
