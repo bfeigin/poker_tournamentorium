@@ -56,4 +56,8 @@ class EnovaPoker < Padrino::Application
   #     render 'errors/505'
   #   end
   #
+
+  get '/' do
+    redirect '/tournament/show'
+  end
 end
