@@ -1,0 +1,22 @@
+html {height:100%;min-height:100%}
+body {height:100%;min-height:100%;position:relative;color: #666; font: 1em "proxima-nova-1", "proxima-nova-2", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none;}
+#head, #wrap, #container, #intro, #content {position: relative; margin-left: auto; margin-right: auto}
+#head { position: relative; width: 965px; padding:16px 25px 18px 0px; height: 60px; }
+  #logo { float: left }
+  #logo a { background: url('/images/logo.jpg') no-repeat; width: 400px; height: 70px; display: block; opacity: 1; -webkit-transition: opacity ease 0.3s; line-height: 70px; padding-left: 210px; font-size: 1.6em }
+  #logo a:hover {opacity: 0.8; -webkit-transition: opacity ease 0.3s}
+#wrap {height:100%;min-height:100%; background: url('/images/background.gif'); }
+#clear { clear:both; display:block; height: 30px;}
+#container {width: 990px; border-radius: 4px; -moz-border-radius: 4px; -webkit-box-shadow: 0px 1px 5px rgba(0,0,0,0.2), 0px 0px 2px rgba(0,0,0,0.2); -moz-box-shadow: 0px 1px 5px rgba(0,0,0,0.2), 0px 0px 2px rgba(0,0,0,0.2); box-shadow: 0px 1px 5px rgba(0,0,0,0.2), 0px 0px 2px rgba(0,0,0,0.2); z-index: 2; background-color: #fff; padding-bottom: 20px; position: relative}
+  #header {overflow: hidden; padding: 20px 25px;}
+    h1 { font-size: 1.6em; }
+  #content { padding: 0px 25px; }
+  table,pre { margin-top: 10px; }
+  .table tbody + tbody { font-size: 0.9em; border: none !important; }
+  .nav-tabs > li > a { min-width: 105px !important; }
+  .clear { clear: both; }
+  .name { margin-right: 10px; }
+  .card { display: inline; padding: 0px 2px; margin-right: 10px;
+}
+    .red { color: red; }
+    .black { color: black; }

@@ -18,9 +18,11 @@ class Round < ActiveRecord::Base
     puts "entering round #{inspect}"
     @active_players = hand.active_players
     puts "with players #{@active_players}"
+    
+    close! unless enough_players?
+
     @max_bet = @active_players.max_by{|player| player.chips}.chips || 1
 
-    close! unless enough_players?
 
     if betting_phase.to_sym == hand.betting_phases.first
       call_blinds(hand.game_table.small_blind)
@@ -177,6 +179,7 @@ class Round < ActiveRecord::Base
       # Find the player's latest bet or blind in this round.
       last_bet = player.actions.where(:round_id => self.id).where(:action_name => ['blind', 'bet']).order("id desc").first
       if last_bet
+        logger.info "Player #{player.id} bet #{last_bet.amount} in round #{self.id}"
         self.pot += last_bet.amount
         player.chips -= last_bet.amount
         player.save!

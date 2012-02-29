@@ -1,4 +1,5 @@
 EnovaPoker.controllers :game_table do
+  layout :app
   get :show, :with => :id do
     if @game_table = GameTable.find(params[:id])
       render "game_table/show"

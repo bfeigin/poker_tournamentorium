@@ -22,7 +22,7 @@ class Hand < ActiveRecord::Base
     save 
     record_stats
     deal_pocket_cards
-    while next_round do
+    while next_round && active_players.size > 1 do
       rounds.currently_open.play!
       deal_community_cards
     end
@@ -87,15 +87,23 @@ class Hand < ActiveRecord::Base
     # Allocate the pot over the winners.
     pot = self.rounds.sum(:pot)
     remaining_pot = pot
+    winners_data = {}
     @winners.each do |winner|
       chips = (winner == @winners.last) ? remaining_pot : (pot / @winners.size)
       puts "#{winner.name} receives #{chips}"
+
+      winners_data[winner.name] = { :chips_received => chips, :hand => winner.cards_hash(self) }
 
       winner.chips += chips
       winner.save!
       winner.notify(:event => "won_chips", :amount => chips)
       Action.create(:player_id => winner.id, :round_id => self.rounds.last.id, :action_name => "won", :amount => chips)
       remaining_pot -= chips
+    end
+
+    # Notify each player about the winning hand(s).
+    self.players.each do |player|
+      player.notify(:event => "hand_ended", :winners => winners_data)
     end
   end
 
