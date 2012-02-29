@@ -25,12 +25,10 @@ class Tournament < ActiveRecord::Base
 
     puts estimated_players.inspect
 
-    initial_count = 0
-    game_tables.each do |gt|
-      gt.players = estimated_players[initial_count]
-      puts "estimated_players[initial_count]: #{estimated_players[initial_count]}"
-      initial_count = initial_count + 1
-      puts "initial_count: #{initial_count}"
+    game_tables.each_with_index do |gt, i|
+      estimated_players[i].each do |p|
+        p.seat(gt)
+      end
       gt.save
     end
   end

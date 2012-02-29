@@ -20,11 +20,12 @@ describe "Tournament Model" do
     tournament = Factory.create :tournament
 
     tournament.expects(:players).returns([
-                                            mock("player 1", :seat => true, :ready? => true),
-                                            mock("player 2", :seat => true, :ready? => true),
-                                            mock("player 3", :seat => true, :ready? => true) 
+                                            mock("player 1", :seat => true, :ready? => true, :id => 1),
+                                            mock("player 2", :seat => true, :ready? => true, :id => 2),
+                                            mock("player 3", :seat => true, :ready? => true, :id => 3) 
                                          ])
 
+    tournament.game_tables.create
     tournament.seat!
   end
 
@@ -37,7 +38,7 @@ describe "Tournament Model" do
     tournament.seat!
   end
 
-  it "should create multiple tables if one fills up" do
+  it "should fill tables evenly" do
     tournament = Factory.create :tournament
 
     9.times do 
@@ -46,8 +47,12 @@ describe "Tournament Model" do
     Player.any_instance.expects(:ready?).at_least_once.returns(true)
     Player.any_instance.expects(:accepts_seat?).at_least_once.returns(true)
 
+    tournament.game_tables.create
+    tournament.game_tables.create
     tournament.seat!
 
     tournament.game_tables.count.should == 2
+    tournament.game_tables.first.reload.players.count.should < 6
+    tournament.game_tables.last.reload.players.count.should < 6
   end
 end
