@@ -12,6 +12,7 @@
         %tr
           %th.first=mat(:player, :id)
           %th=mat(:player, :tournament_id)
+          %th=mat(:player, :game_tables_id)
           %th=mat(:player, :hostname)
           %th=mat(:player, :chips)
           %th=mat(:player, :name)
@@ -20,6 +21,7 @@
           %tr
             %td.first=player.id
             %td=player.tournament_id
+            %td=(player.seating ? player.seating.game_table_id : "")
             %td=player.hostname
             %td=player.chips
             %td=player.name
