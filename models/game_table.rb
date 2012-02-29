@@ -19,7 +19,7 @@ class GameTable < ActiveRecord::Base
 
   def begin_hand
     assign_dealer!
-    hands.create # TODO: incorporate dealer position
+    hands.create
   end
 
   def small_blind

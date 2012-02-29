@@ -12,6 +12,8 @@ class Tournament < ActiveRecord::Base
       p.ready?
     end
 
+    logger.info "Ready players: #{ready_players.inspect}"
+
     # Attempt to seat all ready players.
     #ready_players.each do |p|
     #  if current_table.full?
@@ -26,7 +28,7 @@ class Tournament < ActiveRecord::Base
     puts estimated_players.inspect
 
     game_tables.each_with_index do |gt, i|
-      estimated_players[i].each do |p|
+      (estimated_players[i] || []).each do |p|
         p.seat(gt)
       end
       gt.save
