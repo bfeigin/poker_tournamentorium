@@ -26,5 +26,7 @@ body {height:100%;min-height:100%;position:relative;color: #666; font: 1em "prox
     .red { color: red; }
     .black { color: black; }
 
-  .color_0 { background: red; }
-  .color_1 { background: green; }
+  .color_0 { background: red !important; }
+  .color_1 { background: green !important; }
+  .color_2 { background: orange !important; }
+ 
