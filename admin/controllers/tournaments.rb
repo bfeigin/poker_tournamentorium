@@ -57,4 +57,11 @@ Admin.controllers :tournaments do
     flash[:notice] = 'Seating has begun.'
     redirect url(:tournaments, :show, :id => @tournament.id)
   end
+
+  post :close do
+    @tournament = Tournament.find(params[:id])
+    @tournament.close!
+    flash[:notice] = 'Tournament Closed!'
+    redirect url(:tournaments, :show, :id => @tournament.id)
+  end
 end

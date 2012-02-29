@@ -81,6 +81,7 @@ ActiveRecord::Schema.define(:version => 9) do
 
   create_table "tournaments", :force => true do |t|
     t.string "name"
+    t.string "registration", :null => false, :default => 'open'
   end
 
 end
