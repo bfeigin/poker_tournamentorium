@@ -15,10 +15,7 @@ ActiveRecord::Schema.define(:version => 9) do
 
   create_table "accounts", :force => true do |t|
     t.string "name"
-    t.string "surname"
-    t.string "email"
-    t.string "crypted_password"
-    t.string "role"
+    t.string "registration", :null => false, :default => 'open'
   end
 
   create_table "actions", :force => true do |t|
