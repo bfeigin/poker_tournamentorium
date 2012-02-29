@@ -47,4 +47,17 @@ class GameTable < ActiveRecord::Base
     seating.save!
     players.reload
   end
+
+  def open?
+    status == 'open'
+  end
+
+  def close
+    self.status = 'close'
+    seatings.each do |seating|
+      seating.active = false
+      seating.save
+    end
+    save
+  end
 end

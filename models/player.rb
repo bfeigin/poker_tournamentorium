@@ -2,7 +2,7 @@ class Player < ActiveRecord::Base
   include RemotePlayer
 
   belongs_to :tournament
-  has_one :seating
+  has_one :seating, :conditions => 'active = true'
   has_many :actions
   has_many :cards, :as => :dealable
 
