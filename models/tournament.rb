@@ -36,6 +36,7 @@ class Tournament < ActiveRecord::Base
 
 
     opened_game_tables.each_with_index do |gt, i|
+      logger.info "Trying to seat #{estimated_players[i]} at table #{gt.inspect}."
       (estimated_players[i] || []).each do |p|
         p.seat(gt)
       end
