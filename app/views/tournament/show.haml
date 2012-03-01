@@ -2,5 +2,15 @@
   %h1 Tables
 #content
   - @tournament.game_tables.each do |game_table|
-    %p= link_to "Table #{game_table.id}", url_for(:game_table, :show, game_table.id)
-
+    .pokertable
+      .inner{:align=>"center"}
+        = link_to "Table #{game_table.id}", url_for(:game_table, :show, game_table.id)
+        .labeldiv
+          = game_table.status == "open" ? "<span class='label label-success' style='background-color:green'>open</span>" : "<span class='label'>closed</span>"
+    .pokertabledesc
+      Current players: 
+      = game_table.players.map(&:name).join(", ")
+      %br
+      Number of hands:
+      = game_table.hands.count
+    %div{:style=>"clear:both;"}

@@ -17,7 +17,7 @@
                 %div.name.label{:class => class_for_player[stat.player.id]}= stat.player.name.chomp
                 %div
                   #{stat.chips} chips
-          %div{:style=>"clear:both;"}
+          %div{:style=>"clear:both;height:15px;"}
           - hand.rounds.each do |round|
             .well
               %h3
@@ -41,3 +41,5 @@
                       checked.
                     - else
                       bet #{action.amount}.
+              %h6.pot
+                Pot for this round: #{round.pot}
