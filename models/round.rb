@@ -21,14 +21,12 @@ class Round < ActiveRecord::Base
     
     close! unless enough_players?
 
-    @max_bet = [@active_players.min_by{|player| player.chips}.chips || 0, 2].max
-
     if betting_phase.to_sym == hand.betting_phases.first
       call_blinds(hand.game_table.small_blind)
     end
 
+    @max_bet = [@active_players.min_by{|player| player.chips}.chips || 0, current_bet].max
 
-    puts
     while ( enough_players? && 
             (player = action_to) && 
             ((non_blinds_for_player(player).size == 0) ||
@@ -67,7 +65,6 @@ class Round < ActiveRecord::Base
       return action_hash[:action] == "blind" &&
              (amount = action_hash[:amount]) &&
              amount.to_i == current_bet && 
-             amount.to_i <= max_bet &&
              player.reload.chips >= amount.to_i            
     else
       # Either a bet or fold is allowed.
@@ -75,7 +72,11 @@ class Round < ActiveRecord::Base
         if action_name.to_s == "bet"
           if amount = action_hash[:amount]
             # A bet is only valid if it meets the minimum bet.
-            amount.to_i >= (current_bet || 0) && player.reload.chips >= amount.to_i
+            amount.to_i >= (current_bet || 0) &&
+            # And is under or at the maximum bet.
+            amount.to_i <= max_bet &&
+            # And the player must be able to meet this bet at round end.
+            player.reload.chips >= amount.to_i
           end
         elsif action_name.to_s == "fold"
           true
@@ -128,7 +129,7 @@ class Round < ActiveRecord::Base
       :your_chips       => action_to.chips,
       :your_hand        => action_to.cards_hash(self.hand),
       :community_cards  => hand.community_cards.as_json.to_param_hash,
-      :game_table_identifier => "table_#{hand.game_table.id}",
+      :game_table_identifier => "game_table_#{hand.game_table.id}",
       :hand_identifier  => "hand_#{hand.id}",
       :betting_phase    => self.betting_phase,
       :active_players   => players_data

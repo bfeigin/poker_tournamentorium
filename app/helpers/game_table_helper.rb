@@ -6,7 +6,7 @@ EnovaPoker.helpers do
   # end
   def build_card(number, suit_code)
     card = "<div class='card'>"
-    card << number
+    card << (number == "T" ? "10" : number)
     case suit_code
       when "C" 
         card << "<div class='suit black'>&clubs;</div>"
@@ -19,5 +19,10 @@ EnovaPoker.helpers do
     end
     card << "</div>"
     card
+  end
+
+  def build_hand(hand_string)
+    cards = hand_string.split("(").first.split(" ")
+    cards.collect { |c| build_card(c[0..0], c[1..1].to_upper) }.join(" ")
   end
 end 

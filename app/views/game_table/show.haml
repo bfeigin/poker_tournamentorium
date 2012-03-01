@@ -1,4 +1,4 @@
-- class_for_player = {}; @game_table.tournament.players.each_with_index do |p, i| class_for_player[p.id] = "color_#{i % 10}" end
+- class_for_player = {}; @game_table.tournament.players.each_with_index do |p, i| class_for_player[p.id] = "color_#{i % 9}" end
 #header
   %h1 Table #{@game_table.id}
 #content
@@ -33,7 +33,7 @@
                   - elsif action.is_blind?
                     posted blinds of #{action.amount}.
                   - elsif action.is_win?
-                    won #{action.amount}!
+                    won #{action.amount} with <strong>#{hand.full_player_hand(action.player).rank}</strong>!
                   - elsif action.is_unseat?
                     was unseated from the table.
                   - else

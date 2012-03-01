@@ -22,10 +22,6 @@ class GameTable < ActiveRecord::Base
     hands.create
   end
 
-  def small_blind
-    1
-  end
-
   def full?
     players.count >= MAX_PLAYERS
   end

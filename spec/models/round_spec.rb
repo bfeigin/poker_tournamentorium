@@ -81,6 +81,7 @@ describe "Round Model" do
     before :each do
       @r = Round.new
       @r.stubs(:current_bet).returns(50)
+      @r.stubs(:max_bet).returns(100)
 
       @p = stub('player', :chips => 100)
       @p.stubs(:reload).returns(@p)
