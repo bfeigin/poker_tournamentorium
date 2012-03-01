@@ -31,7 +31,7 @@ module RemotePlayer
   # Inform the player which table we're seating them at. A 200 should be guaranteed,
   # but if they've changed their mind, we just won't seat them at this table.
   def accepts_seat?(table)
-    RestClient::Request.execute(:method => :post, :url => seating_path, :payload => { :table => table.as_json }, :timeout => TIMEOUT, :open_timeout => TIMEOUT) do |response, request, result|
+    RestClient::Request.execute(:method => :post, :url => seating_path, :payload => { :game_table_identifier => "game_table_#{table.id}" }, :timeout => TIMEOUT, :open_timeout => TIMEOUT) do |response, request, result|
       response.code == 200
     end
   rescue
