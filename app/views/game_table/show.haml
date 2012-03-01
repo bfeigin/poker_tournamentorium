@@ -1,4 +1,4 @@
-- class_for_player = {}; @game_table.tournament.players.each_with_index do |p, i| class_for_player[p.id] = "color_#{i}" end
+- class_for_player = {}; @game_table.tournament.players.each_with_index do |p, i| class_for_player[p.id] = "color_#{i % 10}" end
 #header
   %h1 Table #{@game_table.id}
 #content
@@ -11,6 +11,13 @@
       - @game_table.hands.order(:id).each_with_index do |hand, i|
         .tab-pane{:id => "l#{i+1}"}
           %h2 Hand ##{i+1}
+          - HandStartStat.where(:hand_id => hand.id).each do |stat|
+            .well.playerbox 
+              %div
+                %div.name.label{:class => class_for_player[stat.player.id]}= stat.player.name.chomp
+                %div
+                  #{stat.chips} chips
+          %div{:style=>"clear:both;"}
           - hand.rounds.each do |round|
             .well
               %h3
