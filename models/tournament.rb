@@ -11,29 +11,21 @@ class Tournament < ActiveRecord::Base
     game_tables.each do |game_table|
       game_table.seatings.each do |seating|
         seating.active = false
-	seating.save
+	      seating.save
       end
     end
+
     # Get a list of ready players (make GET requests to each).
-    ready_players = players.select do |p|
+    ready_players = players.where("chips > 1").select do |p|
       p.ready?
     end
 
     logger.info "Ready players: #{ready_players.inspect}"
 
-    # Attempt to seat all ready players.
-    #ready_players.each do |p|
-    #  if current_table.full?
-    #    current_table = game_tables.create
-    #  end
-
-    #  p.seat(current_table)
-
-    #number_of_players_per_table = (ready_players.size.to_f / game_tables.size).ceil
+    # Attempt to seat all ready players at our current tables.
     opened_game_tables = game_tables.select {|game_table| game_table.open? }
    
     estimated_players = ready_players.group_by { |p| p.id % opened_game_tables.size }
-
 
     opened_game_tables.each_with_index do |gt, i|
       logger.info "Trying to seat #{estimated_players[i]} at table #{gt.inspect}."
