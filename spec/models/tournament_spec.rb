@@ -19,11 +19,11 @@ describe "Tournament Model" do
   it "should attempt to seat all available players" do
     tournament = Factory.create :tournament
 
-    tournament.expects(:players).returns([
+    tournament.expects(:players).returns(mock('proxy', :where => [
                                             mock("player 1", :seat => true, :ready? => true, :id => 1),
                                             mock("player 2", :seat => true, :ready? => true, :id => 2),
                                             mock("player 3", :seat => true, :ready? => true, :id => 3) 
-                                         ])
+                                         ]))
 
     tournament.game_tables.create
     tournament.seat!
@@ -32,7 +32,7 @@ describe "Tournament Model" do
   it "should check if a player is ready to seat first" do
     tournament = Factory.create :tournament
     p = Factory.create :player, :tournament => tournament
-    tournament.expects(:players).returns([p])
+    tournament.expects(:players).returns(mock('proxy', :where => [p]))
     p.expects(:ready?)
 
     tournament.seat!
@@ -42,7 +42,7 @@ describe "Tournament Model" do
     tournament = Factory.create :tournament
 
     9.times do 
-      p = Factory.create :player, :tournament => tournament
+      p = Factory.create :player, :tournament => tournament, :chips => 10
     end
     Player.any_instance.expects(:ready?).at_least_once.returns(true)
     Player.any_instance.expects(:accepts_seat?).at_least_once.returns(true)
