@@ -21,12 +21,12 @@ class Round < ActiveRecord::Base
     
     close! unless enough_players?
 
-    @max_bet = @active_players.max_by{|player| player.chips}.chips || 1
-
+    @max_bet = [@active_players.min_by{|player| player.chips}.chips || 0, 2].max
 
     if betting_phase.to_sym == hand.betting_phases.first
       call_blinds(hand.game_table.small_blind)
     end
+
 
     puts
     while ( enough_players? && 
